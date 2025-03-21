@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import Product from "@/components/jyn/mainComponent/Product";
-=======
 import Product from "@/app/main/components/mainComponent/Product";
->>>>>>> JYN
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
@@ -22,13 +18,8 @@ const MainPage = async () => {
   // console.log(dataArr);
   return (
     <>
-<<<<<<< HEAD
-      <div className="mt-[250px] pb-[5vw] px-3">
-        <div className="productWrap">
-=======
       <section className="mt-60 pb-[5vw] px-3">
         <article className="productWrap">
->>>>>>> JYN
           {dataArr.map((v) => {
             const price = v.productPrice
               .toString()
@@ -36,13 +27,8 @@ const MainPage = async () => {
 
             return <Product key={v.id} {...v} productPrice={price} />;
           })}
-<<<<<<< HEAD
-        </div>
-      </div>
-=======
         </article>
       </section>
->>>>>>> JYN
     </>
   );
 };

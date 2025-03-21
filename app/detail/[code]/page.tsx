@@ -1,4 +1,4 @@
-import DetailButton from "@/components/jyn/detailBtn/Detail.Button";
+import DetailButton from "@/app/wish/components/detailBtn/Detail.Button";
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 

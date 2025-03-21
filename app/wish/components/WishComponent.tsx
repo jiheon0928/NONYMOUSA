@@ -1,11 +1,11 @@
 "use client";
 import { fetchData } from "@/app/main/data/data";
 import { useState, useEffect } from "react";
-import { ProductType } from "../../main/components/mainComponent/productTypeype";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
-import WishListImage from "../subComponents/WishListImage";
-import WishListTitle from "../subComponents/WishListTitle";
+import { ProductType } from "./wishListType";
+import WishListImage from "./wishList/subComponents/WishListImage";
+import WishListTitle from "./wishList/subComponents/WishListTitle";
 
 const WishComponent = () => {
   const [data, setData] = useState<ProductType[]>([]);
