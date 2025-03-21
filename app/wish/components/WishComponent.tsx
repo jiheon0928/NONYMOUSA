@@ -65,12 +65,14 @@ const WishComponent = () => {
           }}
         >
           {filteredData.map((v) => {
-            const price = v.productPrice;
+            const price = v
+              .productPrice!.toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             return (
               <WishList
                 key={v.id}
                 {...v}
-                productPrice={price}
+                productPrice={+price}
                 toggleHandler={() => {
                   toggleWishHandler(v.id!);
                 }}
