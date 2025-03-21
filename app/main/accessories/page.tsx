@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import Product from "@/components/jyn/mainComponent/Product";
+=======
+import Product from "@/app/main/components/mainComponent/Product";
+>>>>>>> JYN
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
