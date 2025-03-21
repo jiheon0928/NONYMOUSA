@@ -1,5 +1,5 @@
 import DetailButton from "@/app/wish/components/detailBtn/Detail.Button";
-import { db } from "@/lib/firebase";
+import { firestore } from "@/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 interface Data {
@@ -11,7 +11,7 @@ type DetailCodePageProps = {
 };
 const DetailCodePage = async ({ params }: DetailCodePageProps) => {
   const { code } = params;
-  const querySnapshot = await getDocs(collection(db, "products"));
+  const querySnapshot = await getDocs(collection(firestore, "products"));
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

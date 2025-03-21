@@ -1,11 +1,11 @@
 "use client";
 import { fetchData } from "@/app/main/data/data";
 import { useState, useEffect } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { IoMdHeart } from "react-icons/io";
 import { ProductType } from "./wishListType";
 import WishListImage from "./wishList/subComponents/WishListImage";
 import WishListTitle from "./wishList/subComponents/WishListTitle";
+import WishListPrice from "./wishList/subComponents/WishListPrice";
+import WishListButton from "./wishList/subComponents/WishListButton";
 
 const WishComponent = () => {
   const [data, setData] = useState<ProductType[]>([]);
@@ -70,22 +70,21 @@ const WishComponent = () => {
             borderBottom: "1px solid #eee",
           }}
         >
-          {filteredData.map((v) => (
-            <li key={v.id} className="flex items-center">
-              <WishListImage productImage={v.productImage} />
-              <WishListTitle productName={v.productName} />
-              <div>
-                <strong>{v.productPrice}</strong>
-              </div>
-              <div className="btn" onClick={() => toggleWishHandler(v.id!)}>
-                {localStorage.getItem(`isWish_${v.id}`) === "true" ? (
-                  <IoMdHeart className="text-2xl" />
-                ) : (
-                  <IoIosHeartEmpty className="text-2xl" />
-                )}
-              </div>
-            </li>
-          ))}
+          {filteredData.map((v) => {
+            return (
+              <li key={v.id} className="flex items-center">
+                <WishListImage productImage={v.productImage} />
+                <WishListTitle productName={v.productName} />
+                <WishListPrice productPrice={v.productPrice} />
+                <WishListButton
+                  id={v.id}
+                  toggleHandler={() => {
+                    toggleWishHandler(v.id!);
+                  }}
+                />
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="py-40 text-center text-gray-400">

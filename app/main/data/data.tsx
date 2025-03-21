@@ -1,4 +1,4 @@
-import { db } from "@/lib/firebase";
+import { firestore } from "@/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 export interface Data {
@@ -7,7 +7,7 @@ export interface Data {
 }
 
 export const fetchData = async (): Promise<Data[]> => {
-  const querySnapshot = await getDocs(collection(db, "products"));
+  const querySnapshot = await getDocs(collection(firestore, "products"));
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
