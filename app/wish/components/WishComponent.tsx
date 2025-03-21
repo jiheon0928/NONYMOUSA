@@ -1,11 +1,8 @@
 "use client";
 import { fetchData } from "@/app/main/data/data";
 import { useState, useEffect } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { IoMdHeart } from "react-icons/io";
 import { ProductType } from "./wishListType";
-import WishListImage from "./wishList/subComponents/WishListImage";
-import WishListTitle from "./wishList/subComponents/WishListTitle";
+import WishList from "./wishList/WishList";
 
 const WishComponent = () => {
   const [data, setData] = useState<ProductType[]>([]);
@@ -35,7 +32,6 @@ const WishComponent = () => {
         }
       }
     }
-
     setWishIds(ids);
   }, []);
 
@@ -60,39 +56,34 @@ const WishComponent = () => {
   };
 
   return (
-    <div>
-      <h2 className="p-3 mb-4 text-xl">Wish List</h2>
+    <article>
       {filteredData.length > 0 ? (
         <ul
-          className="p-3"
           style={{
             borderTop: "1px solid #eee",
             borderBottom: "1px solid #eee",
           }}
         >
-          {filteredData.map((v) => (
-            <li key={v.id} className="flex items-center">
-              <WishListImage productImage={v.productImage} />
-              <WishListTitle productName={v.productName} />
-              <div>
-                <strong>{v.productPrice}</strong>
-              </div>
-              <div className="btn" onClick={() => toggleWishHandler(v.id!)}>
-                {localStorage.getItem(`isWish_${v.id}`) === "true" ? (
-                  <IoMdHeart className="text-2xl" />
-                ) : (
-                  <IoIosHeartEmpty className="text-2xl" />
-                )}
-              </div>
-            </li>
-          ))}
+          {filteredData.map((v) => {
+            const price = v.productPrice;
+            return (
+              <WishList
+                key={v.id}
+                {...v}
+                productPrice={price}
+                toggleHandler={() => {
+                  toggleWishHandler(v.id!);
+                }}
+              />
+            );
+          })}
         </ul>
       ) : (
         <p className="py-40 text-center text-gray-400">
           위시리스트에 상품이 없습니다.
         </p>
       )}
-    </div>
+    </article>
   );
 };
 
