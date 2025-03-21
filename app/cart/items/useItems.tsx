@@ -1,6 +1,6 @@
 "use client";
 
-import { db } from "@/lib/firebase";
+import { firestore } from "@/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
@@ -16,7 +16,7 @@ const useItems = () => {
   const [itemArr, setItemArr] = useState<Item[]>([]);
 
   const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, "shoppingCart"));
+    const querySnapshot = await getDocs(collection(firestore, "shoppingCart"));
     const items: Item[] = [];
     querySnapshot.forEach((doc) => {
       items.push({ ...doc.data(), id: doc.id } as Item);
