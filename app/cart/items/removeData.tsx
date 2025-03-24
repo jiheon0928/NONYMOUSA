@@ -1,9 +1,9 @@
-import { db } from "@/lib/firebase";
+import { firestore } from "@/firebase/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 
 export const removeData = async (itemId: string) => {
   try {
-    const itemRef = doc(db, "shoppingCart", itemId);
+    const itemRef = doc(firestore, "shoppingCart", itemId);
     await deleteDoc(itemRef);
     window.location.reload();
   } catch (error) {}

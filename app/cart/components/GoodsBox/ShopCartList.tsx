@@ -1,9 +1,7 @@
 import { ReactElement } from "react";
-import ChangeHandle from "./subcomponents/ChangeHandle";
-import ImageHandle from "./subcomponents/ImageHandle";
-import TextHandle from "./subcomponents/TextHandle";
 import ButtonText from "./ButtonText";
 import ImgButtonText from "./ImgButtonText";
+import UpDownHandle from "./subcomponents/UpDownHandle";
 
 // 타입 정의
 type ShopCartListProps = {
@@ -12,7 +10,6 @@ type ShopCartListProps = {
   goodsNameStyle: string;
   removeDataText: string | ReactElement;
   removeDataTextStyle: string;
-  removeFunc: () => void;
   countBtnStyle: string;
   countTextStyle: string;
   countBoxText: string;
@@ -21,31 +18,40 @@ type ShopCartListProps = {
   priceTextStyle: string;
   priceText: string;
   countBtnText: string;
+  isChecked: boolean;
+  removeFunc: () => void;
   upDownBtn: () => void;
   buyFunc: () => void;
-  isChecked: boolean;
-  onCheckboxChange: (isChecked: boolean) => void; // 체크박스 상태 처리 함수 추가
+  cancleClickFunc: () => void;
+  checkClickFunc: () => void;
+  downClickFunc: () => void;
+  upClickFunc: () => void;
+  onCheckboxChange: (isChecked: boolean) => void;
 };
 
 const ShopCartList = ({
+  isChecked,
   image,
   goodsName,
   goodsNameStyle,
   removeDataText,
   removeDataTextStyle,
   removeFunc,
+  onCheckboxChange,
+  cancleClickFunc,
+  checkClickFunc,
+  downClickFunc,
+  upClickFunc,
   countBtnStyle,
-  countTextStyle,
-  countBoxText,
-  isChecked,
-  buyFunc,
-  priceBtnStyle,
-  priceBtnText,
-  priceTextStyle,
-  priceText,
   countBtnText,
   upDownBtn,
-  onCheckboxChange, // 전달된 onCheckboxChange 함수
+  countTextStyle,
+  countBoxText,
+  priceBtnStyle,
+  priceBtnText,
+  buyFunc,
+  priceTextStyle,
+  priceText,
 }: ShopCartListProps) => {
   return (
     <table className="w-full border-collapse">
@@ -70,6 +76,16 @@ const ShopCartList = ({
             </div>
           </td>
           <td className="border-b border-r w-2/12">
+            <UpDownHandle
+              name=""
+              image=""
+              quantity=""
+              text=""
+              cancleClickFunc={cancleClickFunc}
+              checkClickFunc={checkClickFunc}
+              downClickFunc={downClickFunc}
+              upClickFunc={upClickFunc}
+            />
             <ButtonText
               buttonStyle={countBtnStyle}
               buttonText={countBtnText}
@@ -87,7 +103,7 @@ const ShopCartList = ({
               text={priceText}
             />
           </td>
-          <td className="w-1/12">asd</td>
+          <td className="w-1/12 row-span-full">asd</td>
         </tr>
       </tbody>
     </table>
