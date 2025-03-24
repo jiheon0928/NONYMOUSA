@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import BaseButton from "./BaseButton";
+import BaseButton from "../BaseButton";
 import QnA from "./QnA";
 import ExchangeTable from "./ExchangeTable";
 
@@ -32,7 +32,7 @@ const Exchange = () => {
         <QnA />
       </div>
 
-      <div style={{ display: isSelect ? "none" : "block" }}>
+      <div className="pt-5" style={{ display: isSelect ? "none" : "block" }}>
         <ExchangeTable />
       </div>
     </div>

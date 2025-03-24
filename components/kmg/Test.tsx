@@ -1,28 +1,28 @@
 "use client";
-
 import { useEffect } from "react";
-
-import Image from "next/image";
 import { useProductStore } from "../zustand/state";
+import ImgSlide from "./ImgSlide/ImgSlide";
 
 const Test = () => {
-  const { data, fetchData, loading } = useProductStore();
+  const { fetchData, data, loading } = useProductStore();
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) {
+    return <div>로딩중...</div>;
+  }
 
-  console.log(data);
+  if (data.length === 0) {
+    return <div>불러올 데이터가 없습니다.</div>;
+  }
+
   return (
-    <>
-      {data.map((v) => (
-        <div key={v.id}>
-          {v.productId} {v.productName}
-          <Image src={v.productImage[0]} alt="" width={100} height={100} />
-        </div>
-      ))}
-    </>
+    <div className="flex justify-between">
+      <ImgSlide key="detailImgSlide" imgData={data[0].productImage} />
+      <div></div>
+    </div>
   );
 };
 
