@@ -17,7 +17,7 @@ const ProductWrap = ({
 
   return (
     <div key={productId} className="mb-10">
-      <Link href={`../detail/${productCode}${productHexCodes[0]}`}>
+      <Link href={`/detail/${productId?.toString()}`}>
         <div className="flex flex-col items-center">
           <ProductImage productImage={productImage} />
           <ProductTitle productName={productName} />

@@ -1,6 +1,6 @@
 type BaseButtonProps = {
   clickFunc?: () => void;
-  text: string;
+  text?: string;
   className: string;
   style?: React.CSSProperties;
 };
