@@ -1,5 +1,5 @@
 import BaseText from "../BaseText";
-import BaseButton from "./BaseButton";
+import BaseButton from "../BaseButton";
 
 const QnA = () => {
   return (
@@ -13,12 +13,12 @@ const QnA = () => {
         <BaseButton
           key="ForProduct"
           text="상품 문의"
-          className="px-5 py-2 bg-black text-text-basic_White"
+          className="px-5 py-2 bg-black text-basic_White"
         />
         <BaseButton
           key="oneVsOne"
           text="1 : 1 문의"
-          className="px-5 py-2 bg-white text-text-light_Grey border"
+          className="px-5 py-2 bg-white text-light_Grey border"
         />
       </div>
     </div>
