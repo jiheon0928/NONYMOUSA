@@ -11,6 +11,9 @@ export type ProductData = {
   productManufacturer: string;
   productDeliveryMethod: string;
   productDeliveryPrice: number;
+  productDetails: string;
+  productMaterials: string;
+  productSize: { key: string; value: string }[];
 };
 export type EditProductData = {
   productId: number;
@@ -21,12 +24,16 @@ export type EditProductData = {
   productCategory: "cap" | "outer" | "top" | "bottom" | "accessories";
   productImage: string[];
   productExpectedShippingDate: any;
-  productInfo: string[];
-  productNotice: string[];
+  productInfo: string;
+  productNotice: string;
   productOrigin: string;
   productManufacturer: string;
   productDeliveryMethod: string;
   productDeliveryPrice: number;
+  productDetails: string;
+  productMaterials: string;
+  productSize: { key: string; value: string }[];
+  productSizeInfo: string;
 };
 
 export type ProductListProductData = {
@@ -52,4 +59,8 @@ export type ProductFormData = {
   productManufacturer: string;
   productDeliveryMethod: string;
   productDeliveryPrice: string;
+  productDetails: string;
+  productMaterials: string;
+  productSize: { key: string; value: string }[];
+  productSizeInfo: string;
 };
