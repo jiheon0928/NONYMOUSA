@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
-import { ProductData } from "@/app/types/admintype";
 
 export type productData = {
   productCategory: string;
