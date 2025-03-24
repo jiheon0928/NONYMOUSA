@@ -6,6 +6,7 @@ import ProductBody from "./productDetail/ProductBody";
 import ProductHeader from "./productDetail/ProductHeader";
 import BaseButton from "./BaseButton";
 import { useRouter } from "next/navigation";
+import StatusHandler from "./productDetail/StatusHandler";
 
 type ProductInfoProps = {
   id: string;
@@ -20,25 +21,24 @@ const ProductInfo = ({ id }: ProductInfoProps) => {
     })();
   }, []);
 
-  if (loading) {
-    return <div>로딩중...</div>;
-  }
-
-  if (data.length === 0) {
-    return <div>불러올 데이터가 없습니다.</div>;
-  }
   console.log(data);
   const productData: productData | undefined = data.find(
     (v) => v.productId.toString() === id
   );
 
-  if (!productData) {
-    return <div>해당 제품을 찾을 수 없습니다.</div>;
+  if (loading || data.length === 0 || !productData) {
+    return (
+      <StatusHandler
+        loading={loading}
+        data={data}
+        currentProduct={productData}
+      />
+    );
   }
 
   const router = useRouter();
 
-  const handleColorClick = (hex: string) => {
+  const colorBtnClick = (hex: string) => {
     const sameColorProduct = data.find(
       (item) =>
         item.productCode === productData.productCode &&
@@ -48,6 +48,8 @@ const ProductInfo = ({ id }: ProductInfoProps) => {
 
     if (sameColorProduct) {
       router.push(`/detail/${sameColorProduct.productId}`);
+    } else {
+      alert("상품 정보가 없습니다.");
     }
   };
 
@@ -82,7 +84,7 @@ const ProductInfo = ({ id }: ProductInfoProps) => {
                 key={`${v}btn`}
                 className="w-5 h-5 rounded-md border-none"
                 style={{ backgroundColor: v }}
-                clickFunc={() => handleColorClick(v)}
+                clickFunc={() => colorBtnClick(v)}
               />
             ))}
           </div>
