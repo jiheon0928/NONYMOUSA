@@ -1,4 +1,4 @@
-import QndExchange from "@/components/kmg/QndExchange";
+// import QndExchange from "@/components/kmg/QndExchange";
 
 const DetailLayout = ({
   children,
@@ -8,7 +8,7 @@ const DetailLayout = ({
   return (
     <div className="min-h-screen">
       {children}
-      <QndExchange />
+      {/* <QndExchange /> */}
     </div>
   );
 };
