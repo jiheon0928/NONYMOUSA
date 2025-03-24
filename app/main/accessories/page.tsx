@@ -1,5 +1,6 @@
 import Product from "@/app/main/components/mainComponent/Product";
 import { firestore } from "@/firebase/firebase";
+
 import { collection, getDocs } from "firebase/firestore";
 
 interface Data {

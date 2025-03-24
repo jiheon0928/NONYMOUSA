@@ -1,7 +1,8 @@
-import ToggleDetails from "@/components/kmg/subcomponent/ToggleDetails";
+import ExchangeTable from "@/components/kmg/exchange/ExchangeTable";
+import Test from "@/components/kmg/Test";
 
 const DetailPage = () => {
-  return <ToggleDetails />;
+  return;
 };
 
 export default DetailPage;
