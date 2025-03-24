@@ -98,6 +98,10 @@ const ShopCartPage = () => {
                       countBtnText="옵션/수량 변경"
                       countTextStyle="text-[13px]"
                       upDownBtn={() => ""}
+                      cancleClickFunc={() => ""}
+                      checkClickFunc={() => ""}
+                      downClickFunc={() => ""}
+                      upClickFunc={() => ""}
                       countBtnStyle="text-[11px] px-4 py-1 border-2"
                       priceText={
                         "￦" +
