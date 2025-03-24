@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-import Product from "@/components/jyn/mainComponent/Product";
-=======
 import Product from "@/app/main/components/mainComponent/Product";
->>>>>>> JYN
-import { db } from "@/lib/firebase";
+import { firestore } from "@/firebase/firebase";
+
 import { collection, getDocs } from "firebase/firestore";
 
 interface Data {
@@ -12,7 +9,7 @@ interface Data {
 }
 
 const MainPage = async () => {
-  const querySnapshot = await getDocs(collection(db, "products"));
+  const querySnapshot = await getDocs(collection(firestore, "products"));
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
