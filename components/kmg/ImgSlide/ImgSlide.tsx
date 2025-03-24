@@ -11,7 +11,7 @@ const ImgSlide = ({ imgData }: ImgSlideProps) => {
   const [imgUrl, setImgUrl] = useState<string>(imgData[0]);
 
   return (
-    <div>
+    <div className="w-full">
       <div className="relative h-screen w-full overflow-hidden">
         {imgData.map((img) => (
           <motion.div
