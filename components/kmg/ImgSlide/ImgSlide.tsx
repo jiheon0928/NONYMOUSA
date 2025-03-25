@@ -2,10 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import BaseImage from "../BaseImage";
-
-type ImgSlideProps = {
-  imgData: string[];
-};
+import { ImgSlideProps } from "../types";
 
 const ImgSlide = ({ imgData }: ImgSlideProps) => {
   const [imgUrl, setImgUrl] = useState<string>(imgData[0]);

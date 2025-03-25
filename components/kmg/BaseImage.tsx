@@ -1,9 +1,6 @@
 import Image from "next/image";
-type BaseImageProps = {
-  img: string;
-  className: string;
-  func?: () => void;
-};
+import { BaseImageProps } from "./types";
+
 const BaseImage = ({ className, img, func }: BaseImageProps) => {
   return (
     <figure style={{ position: "relative" }} className={className}>

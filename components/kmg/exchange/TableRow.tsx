@@ -1,12 +1,7 @@
 import BaseText from "../BaseText";
+import { TableRowProps } from "../types";
 
-type Props = {
-  label: string;
-  value: string;
-  highlight?: boolean;
-};
-
-const TableRow = ({ label, value, highlight }: Props) => (
+const TableRow = ({ label, value, highlight }: TableRowProps) => (
   <tr className="border-b align-top">
     <th className="bg-gray-100 w-48 text-left px-4 py-2 align-top">
       <BaseText className="font-medium text-gray-700" text={label} />

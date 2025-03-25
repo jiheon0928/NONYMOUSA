@@ -1,7 +1,5 @@
-import Test from "@/components/kmg/Test";
-
 const DetailPage = () => {
-  return <Test />;
+  return <></>;
 };
 
 export default DetailPage;
