@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 import { HiOutlineMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
@@ -7,7 +6,7 @@ import ChangeHandle from "./ChangeHandle";
 import TextHandle from "./TextHandle";
 
 type UpDownHandleProps = {
-  allPrice: string;
+  allPrice: number;
   image: string;
   name: string;
   price: number;
@@ -17,6 +16,7 @@ type UpDownHandleProps = {
   cancleHandle: () => void;
   confirmHandle: () => void;
 };
+
 const UpDownHandle = ({
   allPrice,
   image,
@@ -42,19 +42,25 @@ const UpDownHandle = ({
         <dialog
           open
           className="fixed w-lvw h-lvh z-[9999] top-0 bg-black bg-opacity-30 flex justify-center items-center ">
-          <div className="w-1/4 h-2/5 bg-white rounded-md relative">
+          <div className=" text-left w-1/4 h-2/5 bg-white rounded-md relative text-black">
             <TextHandle
               text={"옵션 변경"}
               className="border-b text-center py-3"
             />
             <div className="flex p-4 text-xs  gap-5">
-              <Image src={image} alt="" width={60} height={60} />
+              <img src={image} alt="" className="w-20 h-20 object-cover" />
               <div className="flex flex-col pr-20">
                 <TextHandle text={name} className="" />
-                <TextHandle text={price} className="" />
+                <TextHandle
+                  text={`￦${price}`} // formatNumberWithComma 적용
+                  className=""
+                />
               </div>
             </div>
-            <TextHandle text="수량" className="text-xs px-6 pt-6 mb-3" />
+            <TextHandle
+              text="수량"
+              className="text-xs px-6 pt-6 mb-3 text-left"
+            />
             <div className="flex px-6 mb-12">
               <ChangeHandle
                 text={<HiOutlineMinus />}
@@ -73,12 +79,15 @@ const UpDownHandle = ({
             </div>
             <div className="flex justify-between px-4 mb-6">
               <TextHandle text={`총수량${quantity}개`} className="text-xs" />
-              <TextHandle text={`￦${allPrice}`} className="" />
+              <TextHandle
+                text={`￦${allPrice.toLocaleString()}`} // formatNumberWithComma 적용
+                className=""
+              />
             </div>
             <div className="flex justify-center gap-1">
               <ChangeHandle
                 text={"취소"}
-                className="border border-black px-6 py-3 text-xs"
+                className="border border-black px-6 py-3 text-xs text-black"
                 clickFunc={cancleHandle}
               />
               <ChangeHandle
@@ -88,7 +97,7 @@ const UpDownHandle = ({
               />
             </div>
             <button
-              className="absolute top-2 right-5 text-4xl"
+              className="absolute top-2 right-5 text-4xl text-black"
               onClick={() => SetIsOpen(false)}>
               ×
             </button>
