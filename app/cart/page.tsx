@@ -5,7 +5,6 @@ const Page = () => {
   return (
     <>
       <ShopCartPage />
-      <UpDownHandle />
     </>
   );
 };
