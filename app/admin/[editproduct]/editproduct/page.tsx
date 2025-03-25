@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { useParams } from "next/navigation";
 import EditProductForm from "@/components/admin/subcomponents/EditProductForm";
+import { useParams } from "next/navigation";
 
 const EditProductPage = () => {
   const params = useParams();
@@ -16,7 +15,7 @@ const EditProductPage = () => {
   }
 
   return (
-    <div>
+    <div className="mt-32">
       <h1>상품 수정 페이지</h1>
       <EditProductForm productId={productId} />
     </div>

@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import React, { useEffect, useState, FormEvent } from "react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
@@ -13,8 +19,8 @@ export type EditProductFormProps = {
 
 const EditProductForm = ({ productId }: EditProductFormProps) => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     productCode: "",
@@ -32,73 +38,127 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
     productManufacturer: "",
     productDeliveryMethod: "",
     productDeliveryPrice: "",
+    productDetails: "",
+    productMaterials: "",
+    productSize: [] as { key: string; value: string }[],
+    productSizeInfo: "",
   });
-  const [productInfo, setProductInfo] = useState<string>("");
+  const [productInfo, setProductInfo] = useState("");
   const [productExpectedShippingDate, setProductExpectedShippingDate] =
-    useState<string>("");
+    useState("");
   const [existingImageURL, setExistingImageURL] = useState<string[]>([]);
   const [newImageFile, setNewImageFile] = useState<File[]>([]);
+  const [docRefForUpdate, setDocRefForUpdate] = useState<any>(null);
 
   useEffect(() => {
-    const fetchProductData = async () => {
+    const fetchEditProductData = async () => {
       try {
-        const numericId = Number(productId);
-        const snapshot = await getDocs(collection(firestore, "products"));
-        let found = false;
-        snapshot.forEach((docSnap) => {
+        const q = query(
+          collection(firestore, "products"),
+          where("productId", "==", Number(productId))
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const docSnap = querySnapshot.docs[0];
+          setDocRefForUpdate(docSnap.ref);
           const data = docSnap.data() as EditProductData;
-          if (data.productId === numericId) {
-            setFormData({
-              productCode: data.productCode,
-              productHexCodes: data.productHexCodes,
-              productName: data.productName,
-              productPrice: data.productPrice.toString(),
-              productCategory: data.productCategory,
-              productNotice: data.productNotice.join("\n"),
-              productOrigin: data.productOrigin,
-              productManufacturer: data.productManufacturer,
-              productDeliveryMethod: data.productDeliveryMethod,
-              productDeliveryPrice: data.productDeliveryPrice.toString(),
-            });
-            setProductInfo(data.productInfo.join("\n"));
-            if (data.productExpectedShippingDate) {
-              const expectedDate =
-                typeof data.productExpectedShippingDate.toDate === "function"
-                  ? data.productExpectedShippingDate.toDate()
-                  : new Date(data.productExpectedShippingDate);
-              const isoDate = expectedDate.toISOString().split("T")[0];
-              setProductExpectedShippingDate(isoDate);
-            }
-            setExistingImageURL(data.productImage);
-            found = true;
+          setFormData({
+            productCode: data.productCode,
+            productHexCodes: data.productHexCodes,
+            productName: data.productName,
+            productPrice: data.productPrice.toString(),
+            productCategory: data.productCategory,
+            productNotice: data.productNotice,
+            productOrigin: data.productOrigin,
+            productManufacturer: data.productManufacturer,
+            productDeliveryMethod: data.productDeliveryMethod,
+            productDeliveryPrice: data.productDeliveryPrice.toString(),
+            productDetails: data.productDetails,
+            productMaterials: data.productMaterials,
+            productSize: data.productSize || [],
+            productSizeInfo: data.productSizeInfo || "",
+          });
+          setProductInfo(data.productInfo);
+          if (data.productExpectedShippingDate) {
+            const expectedDate =
+              typeof data.productExpectedShippingDate.toDate == "function"
+                ? data.productExpectedShippingDate.toDate()
+                : new Date(data.productExpectedShippingDate);
+            setProductExpectedShippingDate(
+              expectedDate.toISOString().split("T")[0]
+            );
           }
-        });
-        if (!found) {
+          setExistingImageURL(data.productImage);
+        } else {
           setError("제품 데이터를 찾을 수 없습니다.");
         }
-      } catch (error) {
-        console.error("제품 데이터 불러오기 오류:", error);
+      } catch (err) {
+        console.error("제품 데이터 불러오기 오류:", err);
         setError("제품 데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProductData();
+    fetchEditProductData();
   }, [productId]);
 
-  const inputChange = (e: any) => {
+  const handleInputChange = (e: any) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const FileChange = (e: any) => {
+  const handleFileChange = (e: any) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files) as File[];
       setNewImageFile((prev) => [...prev, ...filesArray]);
     }
   };
 
-  // Promise 어노테이션 사용
+  const handleColorChange = (index: number, value: string) => {
+    const newColors = [...formData.productHexCodes];
+    newColors[index] = value;
+    setFormData((prev) => ({ ...prev, productHexCodes: newColors }));
+  };
+
+  const addColorInput = () => {
+    setFormData((prev) => ({
+      ...prev,
+      productHexCodes: [...prev.productHexCodes, ""],
+    }));
+  };
+
+  const removeColorInput = (index: number) => {
+    if (index == 0) return;
+    setFormData((prev) => ({
+      ...prev,
+      productHexCodes: prev.productHexCodes.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSizeChange = (
+    index: number,
+    field: "key" | "value",
+    value: string
+  ) => {
+    const newSizes = [...formData.productSize];
+    newSizes[index] = { ...newSizes[index], [field]: value };
+    setFormData((prev) => ({ ...prev, productSize: newSizes }));
+  };
+
+  const addSizeInput = () => {
+    setFormData((prev) => ({
+      ...prev,
+      productSize: [...prev.productSize, { key: "", value: "" }],
+    }));
+  };
+
+  const removeSizeInput = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      productSize: prev.productSize.filter((_, i) => i !== index),
+    }));
+  };
+
   const uploadNewImages = async (): Promise<string[]> => {
     const promises = newImageFile.map(async (file) => {
       const fileRef = ref(storage, `image/${file.name}`);
@@ -108,51 +168,39 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
     return Promise.all(promises);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const newImageURLs = await uploadNewImages();
       const updatedImageURLs =
         newImageURLs.length > 0 ? newImageURLs : existingImageURL;
-
-      // 전체 문서를 가져와서 제품 ID가 일치하는 문서의 참조(docRef)를 찾음
-      const numericId = Number(productId);
-      const snapshot = await getDocs(collection(firestore, "products"));
-      let docRef = null;
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data() as EditProductData;
-        if (data.productId === numericId) {
-          docRef = docSnap.ref;
-        }
-      });
-
-      if (docRef) {
-        await updateDoc(docRef, {
-          productCode: formData.productCode,
-          productHexCodes: formData.productHexCodes,
-          productName: formData.productName,
-          productPrice: Number(formData.productPrice),
-          productCategory: formData.productCategory,
-          productImage: updatedImageURLs,
-          productExpectedShippingDate: productExpectedShippingDate
-            ? new Date(productExpectedShippingDate + "T00:00:00")
-            : null,
-          productInfo: productInfo
-            .split("\n")
-            .filter((line) => line.trim() !== ""),
-          productNotice: formData.productNotice
-            .split("\n")
-            .filter((line) => line.trim() !== ""),
-          productOrigin: formData.productOrigin,
-          productManufacturer: formData.productManufacturer,
-          productDeliveryMethod: formData.productDeliveryMethod,
-          productDeliveryPrice: Number(formData.productDeliveryPrice),
-        });
-        alert("제품이 성공적으로 수정되었습니다!");
-        router.push("/adminproductlist/adminproductlist");
-      } else {
-        alert("수정할 제품을 찾을 수 없습니다.");
+      if (!docRefForUpdate) {
+        setError("업데이트할 제품 문서를 찾을 수 없습니다.");
+        return;
       }
+      await updateDoc(docRefForUpdate, {
+        productCode: formData.productCode,
+        productHexCodes: formData.productHexCodes,
+        productName: formData.productName,
+        productPrice: Number(formData.productPrice),
+        productCategory: formData.productCategory,
+        productImage: updatedImageURLs,
+        productExpectedShippingDate: productExpectedShippingDate
+          ? new Date(productExpectedShippingDate + "T00:00:00")
+          : null,
+        productInfo: productInfo,
+        productNotice: formData.productNotice,
+        productOrigin: formData.productOrigin,
+        productManufacturer: formData.productManufacturer,
+        productDeliveryMethod: formData.productDeliveryMethod,
+        productDeliveryPrice: Number(formData.productDeliveryPrice),
+        productDetails: formData.productDetails,
+        productMaterials: formData.productMaterials,
+        productSize: formData.productSize,
+        productSizeInfo: formData.productSizeInfo,
+      });
+      alert("제품이 수정되었습니다");
+      router.push("/admin/adminproductlist");
     } catch (err) {
       console.error("제품 수정 오류:", err);
       alert("제품 수정 중 오류가 발생했습니다.");
@@ -177,7 +225,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
             type="text"
             name="productCode"
             value={formData.productCode}
-            onChange={inputChange}
+            onChange={handleInputChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
             required
           />
@@ -185,35 +233,21 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         {/* 상품 색상 */}
         <div>
           <label className="block font-semibold mb-1">상품 색상</label>
-          {formData.productHexCodes.map((color, idx) => (
-            <div key={`color-${idx}`} className="flex items-center mb-2">
+          {formData.productHexCodes.map((color, id) => (
+            <div key={`color-${id}`} className="flex items-center mb-2">
               <input
                 type="text"
                 value={color}
-                onChange={(e) => {
-                  const newColors = [...formData.productHexCodes];
-                  newColors[idx] = e.target.value;
-                  setFormData((prev) => ({
-                    ...prev,
-                    productHexCodes: newColors,
-                  }));
-                }}
+                onChange={(e) => handleColorChange(id, e.target.value)}
                 placeholder="#ffffff"
                 className="w-full border border-gray-300 rounded px-3 py-2"
                 required
               />
-              {idx !== 0 && (
+              {id !== 0 && (
                 <button
                   type="button"
-                  onClick={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      productHexCodes: prev.productHexCodes.filter(
-                        (_, i) => i !== idx
-                      ),
-                    }))
-                  }
-                  className="ml-2 text-red-500 hover:underline"
+                  onClick={() => removeColorInput(id)}
+                  className="ml-2 w-1/12 text-red-500 hover:underline"
                 >
                   취소
                 </button>
@@ -222,12 +256,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
           ))}
           <button
             type="button"
-            onClick={() =>
-              setFormData((prev) => ({
-                ...prev,
-                productHexCodes: [...prev.productHexCodes, ""],
-              }))
-            }
+            onClick={addColorInput}
             className="text-sm text-blue-500 hover:underline"
           >
             색상 추가
@@ -240,7 +269,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
             type="text"
             name="productName"
             value={formData.productName}
-            onChange={inputChange}
+            onChange={handleInputChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
             required
           />
@@ -252,7 +281,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
             type="number"
             name="productPrice"
             value={formData.productPrice}
-            onChange={inputChange}
+            onChange={handleInputChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
             required
           />
@@ -263,7 +292,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
           <select
             name="productCategory"
             value={formData.productCategory}
-            onChange={inputChange}
+            onChange={handleInputChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
             required
           >
@@ -278,11 +307,11 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">상품 안내</label>
           <textarea
+            className="w-full border border-gray-300 rounded px-3 py-2"
             name="productInfo"
             value={productInfo}
             onChange={(e) => setProductInfo(e.target.value)}
             placeholder="상품 안내를 입력하세요."
-            className="w-full border border-gray-300 rounded px-3 py-2"
             required
           />
         </div>
@@ -290,23 +319,22 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">중요 안내</label>
           <textarea
+            className="w-full border border-gray-300 rounded px-3 py-2"
             name="productNotice"
             value={formData.productNotice}
-            onChange={inputChange}
+            onChange={handleInputChange}
             placeholder="중요 안내를 입력하세요."
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            required
           />
         </div>
         {/* 원산지 */}
         <div>
           <label className="block font-semibold mb-1">원산지</label>
           <input
+            className="w-full border border-gray-300 rounded px-3 py-2"
             type="text"
             name="productOrigin"
             value={formData.productOrigin}
-            onChange={inputChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -314,11 +342,11 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">제조사</label>
           <input
+            className="w-full border border-gray-300 rounded px-3 py-2"
             type="text"
             name="productManufacturer"
             value={formData.productManufacturer}
-            onChange={inputChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -326,11 +354,11 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">배송 방법</label>
           <input
+            className="w-full border border-gray-300 rounded px-3 py-2"
             type="text"
             name="productDeliveryMethod"
             value={formData.productDeliveryMethod}
-            onChange={inputChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -338,11 +366,11 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">배송비</label>
           <input
+            className="w-full border border-gray-300 rounded px-3 py-2"
             type="number"
             name="productDeliveryPrice"
             value={formData.productDeliveryPrice}
-            onChange={inputChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -350,34 +378,135 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
         <div>
           <label className="block font-semibold mb-1">출고예정</label>
           <input
+            className="w-full border border-gray-300 rounded px-3 py-2"
             type="date"
             name="productExpectedShippingDate"
             value={productExpectedShippingDate}
             onChange={(e) => setProductExpectedShippingDate(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2"
           />
+        </div>
+        {/* 상품 디테일 설명 */}
+        <div>
+          <label className="block font-semibold mb-1">상품 디테일 설명</label>
+          <textarea
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="productDetails"
+            value={formData.productDetails}
+            onChange={handleInputChange}
+            placeholder="상품 디테일 설명을 입력하세요."
+            required
+          />
+        </div>
+        {/* 상품 재질 설명 */}
+        <div>
+          <label className="block font-semibold mb-1">상품 재질 설명</label>
+          <textarea
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="productMaterials"
+            value={formData.productMaterials}
+            onChange={handleInputChange}
+            placeholder="상품 재질 설명을 입력하세요."
+            required
+          />
+        </div>
+        {/* 상품 사이즈 정보 */}
+        <div>
+          <label className="block font-semibold mb-1">상품 사이즈 정보</label>
+          <textarea
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="productSizeInfo"
+            value={formData.productSizeInfo}
+            onChange={handleInputChange}
+            placeholder="상품 사이즈 정보를 입력하세요."
+            required
+          />
+        </div>
+        {/* 상품 사이즈 (동적 입력, 키와 값) */}
+        <div>
+          <label className="block font-semibold mb-1">상품 사이즈</label>
+          {(formData.productSize || []).map((size, index) => (
+            <div key={`size-${index}`} className="flex items-center gap-2 mb-2">
+              <input
+                type="text"
+                value={size.key}
+                onChange={(e) => {
+                  const newSizes = [...(formData.productSize || [])];
+                  newSizes[index] = { ...newSizes[index], key: e.target.value };
+                  setFormData({ ...formData, productSize: newSizes });
+                }}
+                placeholder="키"
+                className="w-1/3 border border-gray-300 rounded px-3 py-2"
+                required
+              />
+              <input
+                className="w-1/3 border border-gray-300 rounded px-3 py-2"
+                type="text"
+                value={size.value}
+                onChange={(e) => {
+                  const newSizes = [...(formData.productSize || [])];
+                  newSizes[index] = {
+                    ...newSizes[index],
+                    value: e.target.value,
+                  };
+                  setFormData({ ...formData, productSize: newSizes });
+                }}
+                placeholder="값"
+                required
+              />
+              {index !== 0 && (
+                <button
+                  className="ml-2 w-1/12 text-red-500 hover:underline"
+                  type="button"
+                  onClick={() =>
+                    setFormData({
+                      ...formData,
+                      productSize: (formData.productSize || []).filter(
+                        (_, i) => i !== index
+                      ),
+                    })
+                  }
+                >
+                  취소
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            className="text-sm text-blue-500 hover:underline"
+            type="button"
+            onClick={() =>
+              setFormData({
+                ...formData,
+                productSize: [
+                  ...(formData.productSize || []),
+                  { key: "", value: "" },
+                ],
+              })
+            }
+          >
+            사이즈 추가
+          </button>
         </div>
         {/* 상품 이미지 */}
         <div>
           <label className="block font-semibold mb-1">상품 이미지</label>
           <input
+            className="w-full"
             type="file"
             accept="image/*"
             multiple
-            onChange={FileChange}
-            className="w-full"
-            required
+            onChange={handleFileChange}
           />
           {existingImageURL && existingImageURL.length > 0 && (
             <div className="mt-2">
               <p className="text-sm font-semibold">기존 이미지:</p>
               <div className="flex flex-row flex-wrap gap-2">
-                {existingImageURL.map((url, idx) => (
+                {existingImageURL.map((url, id) => (
                   <img
-                    key={`existing-img-${idx}`}
-                    src={url}
-                    alt={`기존 이미지 ${idx + 1}`}
                     className="w-24 h-24 object-cover rounded border"
+                    key={`existing-img-${id}`}
+                    src={url}
+                    alt={`기존 이미지 ${id + 1}`}
                   />
                 ))}
               </div>
@@ -387,12 +516,12 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
             <div className="mt-2">
               <p className="text-sm font-semibold">새로운 이미지:</p>
               <div className="flex flex-row flex-wrap gap-2">
-                {newImageFile.map((file, idx) => (
+                {newImageFile.map((file, id) => (
                   <img
-                    key={`new-img-${idx}-${file.name}`}
-                    src={URL.createObjectURL(file)}
-                    alt={`새로운 이미지 ${idx + 1}`}
                     className="w-24 h-24 object-cover rounded border"
+                    key={`new-img-${id}-${file.name}`}
+                    src={URL.createObjectURL(file)}
+                    alt={`새로운 이미지 ${id + 1}`}
                   />
                 ))}
               </div>
@@ -403,7 +532,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
         >
-          수정 완료
+          상품 등록
         </button>
       </form>
     </div>

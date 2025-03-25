@@ -1,4 +1,4 @@
-import Product from "@/app/main/components/mainComponent/Product";
+import Product from "@/app/shop/components/mainComponent/Product";
 import { firestore } from "@/firebase/firebase";
 
 import { collection, getDocs } from "firebase/firestore";
@@ -8,7 +8,7 @@ interface Data {
   [key: string]: any; // 다른 필드에 대한 타입을 정의할 수 있습니다.
 }
 
-const MainPage = async () => {
+const ShopPage = async () => {
   const querySnapshot = await getDocs(collection(firestore, "products"));
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -37,4 +37,4 @@ const MainPage = async () => {
     </>
   );
 };
-export default MainPage;
+export default ShopPage;

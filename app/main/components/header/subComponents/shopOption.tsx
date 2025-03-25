@@ -18,9 +18,9 @@ const ShopOtion = ({ event }: ShopOtionProps) => {
         transform: "translateY(100%)",
       }}
     >
-      <Option url={"/main"} text={"all"} />
-      <Option url={"/main/cap"} text={"cap"} />
-      <Option url={"/main/accessories"} text={"accessories"} />
+      <Option url={"/shop"} text={"all"} />
+      <Option url={"/shop/cap"} text={"cap"} />
+      <Option url={"/shop/accessories"} text={"accessories"} />
     </ul>
   );
 };
