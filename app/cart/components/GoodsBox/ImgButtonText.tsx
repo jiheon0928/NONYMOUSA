@@ -5,19 +5,19 @@ import TextHandle from "./subcomponents/TextHandle";
 
 type ImgButtonTextProps = {
   image: string;
-  goodsName: string;
-  goodsNameStyle: string;
+  name: string;
+  nameStyle: string;
   removeDataText: string | ReactElement;
-  removeDataTextStyle: string;
+  removeFuncStyle: string;
   removeFunc: () => void;
 };
 
 const ImgButtonText = ({
   image,
-  goodsName,
-  goodsNameStyle,
+  name,
+  nameStyle,
   removeDataText,
-  removeDataTextStyle,
+  removeFuncStyle,
   removeFunc,
 }: ImgButtonTextProps) => {
   return (
@@ -27,13 +27,13 @@ const ImgButtonText = ({
           <td className="w-3/4">
             <div className="flex gap-3">
               <ImageHandle image={image} />
-              <TextHandle text={goodsName} className={goodsNameStyle} />
+              <TextHandle text={name} className={nameStyle} />
             </div>
           </td>
           <td className=" w-1/12 align-top">
             <ChangeHandle
               text={removeDataText}
-              className={removeDataTextStyle}
+              className={removeFuncStyle}
               clickFunc={removeFunc}
             />
           </td>

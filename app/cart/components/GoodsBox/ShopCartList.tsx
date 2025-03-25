@@ -1,109 +1,92 @@
-import { ReactElement } from "react";
-import ButtonText from "./ButtonText";
+import { AiOutlineClose } from "react-icons/ai";
 import ImgButtonText from "./ImgButtonText";
+import TextHandle from "./subcomponents/TextHandle";
 import UpDownHandle from "./subcomponents/UpDownHandle";
+import ChangeHandle from "./subcomponents/ChangeHandle";
 
-// 타입 정의
 type ShopCartListProps = {
   image: string;
-  goodsName: string;
-  goodsNameStyle: string;
-  removeDataText: string | ReactElement;
-  removeDataTextStyle: string;
-  countBtnStyle: string;
-  countTextStyle: string;
-  countBoxText: string;
-  priceBtnStyle: string;
-  priceBtnText: string;
-  priceTextStyle: string;
-  priceText: string;
-  countBtnText: string;
+  name: string;
+  removeDataText: string;
+  quantity: number;
+  allPrice: number;
+  price: number;
+  index: number;
   isChecked: boolean;
+  delivaryPrice: string;
   removeFunc: () => void;
-  upDownBtn: () => void;
-  buyFunc: () => void;
-  cancleClickFunc: () => void;
-  checkClickFunc: () => void;
-  downClickFunc: () => void;
-  upClickFunc: () => void;
+  cancleHandle: () => void;
+  confirmHandle: () => void;
+  downHandle: () => void;
+  upHandle: () => void;
   onCheckboxChange: (isChecked: boolean) => void;
 };
 
 const ShopCartList = ({
-  isChecked,
   image,
-  goodsName,
-  goodsNameStyle,
-  removeDataText,
-  removeDataTextStyle,
+  name,
+  quantity,
+  price,
+  allPrice,
+  isChecked,
+  index,
+  delivaryPrice,
   removeFunc,
+  cancleHandle,
+  confirmHandle,
+  downHandle,
+  upHandle,
   onCheckboxChange,
-  cancleClickFunc,
-  checkClickFunc,
-  downClickFunc,
-  upClickFunc,
-  countBtnStyle,
-  countBtnText,
-  upDownBtn,
-  countTextStyle,
-  countBoxText,
-  priceBtnStyle,
-  priceBtnText,
-  buyFunc,
-  priceTextStyle,
-  priceText,
 }: ShopCartListProps) => {
   return (
-    <table className="w-full border-collapse">
+    <table className="w-full ">
       <tbody>
         <tr>
-          <td className="py-4 gap-3 border-b border-r w-7/12">
-            <div className="flex gap-3">
-              <input
-                className="w-4 h-4 appearance-none border-2 rounded-sm checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex flex checked:items-center checked:flex-row checked:justify-center"
-                type="checkbox"
-                checked={isChecked} // 개별 체크박스 상태
-                onChange={(e) => onCheckboxChange(e.target.checked)} // 체크박스 상태 변경 처리
-              />
-              <ImgButtonText
-                image={image}
-                goodsName={goodsName}
-                goodsNameStyle={goodsNameStyle}
-                removeDataText={removeDataText}
-                removeDataTextStyle={removeDataTextStyle}
-                removeFunc={removeFunc}
-              />
-            </div>
+          <td className="flex gap-5">
+            <input
+              className="w-4 h-4 appearance-none border-2 rounded-sm checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex flex checked:items-center checked:flex-row checked:justify-center"
+              type="checkbox"
+              checked={isChecked}
+              onChange={(e) => onCheckboxChange(e.target.checked)}
+            />
+            <ImgButtonText
+              image={image}
+              name={name}
+              removeDataText={<AiOutlineClose />}
+              removeFunc={removeFunc}
+              nameStyle="text-[12px]"
+              removeFuncStyle=""
+            />
           </td>
-          <td className="border-b border-r w-2/12">
+          <td className=" text-center align-middle space-y-4 w-2/12">
+            <TextHandle text={quantity} className="" />
             <UpDownHandle
-              name=""
-              image=""
-              quantity=""
-              text=""
-              cancleClickFunc={cancleClickFunc}
-              checkClickFunc={checkClickFunc}
-              downClickFunc={downClickFunc}
-              upClickFunc={upClickFunc}
-            />
-            <ButtonText
-              buttonStyle={countBtnStyle}
-              buttonText={countBtnText}
-              clickFunc={upDownBtn}
-              textStyle={countTextStyle}
-              text={countBoxText}
+              name={name}
+              image={image}
+              price={price}
+              quantity={quantity}
+              allPrice={allPrice}
+              cancleHandle={cancleHandle}
+              confirmHandle={confirmHandle}
+              downHandle={downHandle}
+              upHandle={upHandle}
             />
           </td>
-          <td className="border-b border-r w-2/12">
-            <ButtonText
-              buttonStyle={priceBtnStyle}
-              buttonText={priceBtnText}
-              clickFunc={buyFunc}
-              textStyle={priceTextStyle}
-              text={priceText}
+          <td className=" text-center align-middle space-y-4 w-2/12">
+            <TextHandle text={`￦${allPrice.toLocaleString()}`} className="" />
+            <ChangeHandle
+              text={"바로 구매"}
+              className=""
+              clickFunc={() => ""}
             />
           </td>
-          <td className="w-1/12 row-span-full">asd</td>
+          <td
+            className={`${
+              index === 0 ? "row-span-full" : ""
+            } text-center align-middle space-y-4 w-1/12`}>
+            <TextHandle text={delivaryPrice} className="" />
+            <TextHandle text="택배" className="" />
+          </td>
         </tr>
       </tbody>
     </table>
