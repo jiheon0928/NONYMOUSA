@@ -1,10 +1,7 @@
 import { CiShare2 } from "react-icons/ci";
 import BaseText from "../BaseText";
+import { ProductHeaderProps } from "../types";
 
-type ProductHeaderProps = {
-  productName: string;
-  productPrice: number;
-};
 const ProductHeader = ({ productName, productPrice }: ProductHeaderProps) => {
   return (
     <div className="flex flex-col gap-1 mb-8">

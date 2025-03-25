@@ -1,12 +1,6 @@
 // components/common/StatusHandler.tsx
 
-import { productData } from "@/components/zustand/state";
-
-type StatusHandlerProps = {
-  loading: boolean;
-  data: productData[];
-  currentProduct?: productData;
-};
+import { StatusHandlerProps } from "../types";
 
 const StatusHandler = ({
   loading,

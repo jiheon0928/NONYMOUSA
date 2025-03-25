@@ -1,9 +1,4 @@
-type BaseButtonProps = {
-  clickFunc?: () => void;
-  text?: string;
-  className: string;
-  style?: React.CSSProperties;
-};
+import { BaseButtonProps } from "./types";
 
 const BaseButton = ({ clickFunc, text, className, style }: BaseButtonProps) => {
   return (
