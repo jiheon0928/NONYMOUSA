@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",  // React 17 이상에서는 react-jsx
     "incremental": true,
     "plugins": [
       {
