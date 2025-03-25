@@ -14,7 +14,7 @@ const ShopCart = ({
   shopCartCountText,
 }: ShopCartProps) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center py-5">
       <TextHandle className={ShopCartStlye} text={shopCartText} />
       <TextHandle className={shopCartCountStyle} text={shopCartCountText} />
     </div>

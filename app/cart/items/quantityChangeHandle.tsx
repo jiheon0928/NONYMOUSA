@@ -25,6 +25,7 @@ export const useQuantityChange = (initialQuantity: number) => {
       const itemRef = doc(firestore, "shoppingCart", itemId);
       await updateDoc(itemRef, { quantity: tempQuantity });
       setQuantity(tempQuantity);
+      window.location.reload();
     } catch (error) {
       console.error("수량 변경 실패:", error);
     }
