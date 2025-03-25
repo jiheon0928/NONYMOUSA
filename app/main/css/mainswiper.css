@@ -1,0 +1,4 @@
+.sec1__swipe .swiper-button-prev::after,
+.sec1__swiper .swiper-button-next::after {
+  display: none;
+}

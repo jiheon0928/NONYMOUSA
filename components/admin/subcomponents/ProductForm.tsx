@@ -5,7 +5,7 @@ import { collection, addDoc, runTransaction, doc } from "firebase/firestore";
 import { firestore, storage } from "@/firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ProductFormData } from "@/app/types/admintype";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const ProductForm = () => {
   const router = useRouter();

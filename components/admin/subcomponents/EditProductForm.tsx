@@ -81,7 +81,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
           setProductInfo(data.productInfo);
           if (data.productExpectedShippingDate) {
             const expectedDate =
-              typeof data.productExpectedShippingDate.toDate === "function"
+              typeof data.productExpectedShippingDate.toDate == "function"
                 ? data.productExpectedShippingDate.toDate()
                 : new Date(data.productExpectedShippingDate);
             setProductExpectedShippingDate(
@@ -128,7 +128,7 @@ const EditProductForm = ({ productId }: EditProductFormProps) => {
   };
 
   const removeColorInput = (index: number) => {
-    if (index === 0) return;
+    if (index == 0) return;
     setFormData((prev) => ({
       ...prev,
       productHexCodes: prev.productHexCodes.filter((_, i) => i !== index),

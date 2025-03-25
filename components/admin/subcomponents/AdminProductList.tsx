@@ -5,7 +5,7 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
 
-interface ProductData {
+type ProductData = {
   id: string;
   productId: number;
   productCode: string;
@@ -16,7 +16,7 @@ interface ProductData {
   productExpectedShippingDate: any;
   productDeliveryMethod: string;
   productDeliveryPrice: number;
-}
+};
 
 const AdminProductList = () => {
   const [products, setProducts] = useState<ProductData[]>([]);

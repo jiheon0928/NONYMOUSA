@@ -1,13 +1,13 @@
 import Link from "next/link";
-import MainLogo from "../MainLogo";
 import FooterLeft from "./footerLeft";
 import FooterCenter from "./footerCenter";
 import FooterRight from "./footerRight";
+import MainLogo from "../MainLogo";
 
 const Footer = () => {
   return (
     <footer
-      className="mx-20"
+      className="mx-20 mt-4"
       style={{
         borderTop: "1px solid rgba(0, 0, 0, 0.25)",
         padding: "1vw 0",
