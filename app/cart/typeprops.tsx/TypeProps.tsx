@@ -47,3 +47,15 @@ export type ShopCartListProps = {
   removeFunc: () => void;
   upDownBtn: () => void;
 };
+
+export type FetchedItem = {
+  id: string;
+  quantity: number;
+  image: string;
+  name: string;
+  price: number;
+};
+
+export type CartItem = FetchedItem & {
+  removeData: () => void;
+};

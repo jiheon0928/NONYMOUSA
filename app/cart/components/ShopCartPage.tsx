@@ -9,19 +9,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
 import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
+import { CartItem } from "../typeprops.tsx/TypeProps";
 import PurchaseButtons from "./GoodsBox/subcomponents/PurchaseButtons";
-
-type FetchedItem = {
-  id: string;
-  quantity: number;
-  image: string;
-  name: string;
-  price: number;
-};
-
-type CartItem = FetchedItem & {
-  removeData: () => void;
-};
 
 const ShopCartPage = () => {
   const fetchedItems = useItems();
@@ -29,21 +18,17 @@ const ShopCartPage = () => {
   const [isAllChecked, setIsAllChecked] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
   const handleRemoveData = (id: string) => {
     console.log(`${id} 삭제!`);
   };
-
   const cartItems: CartItem[] = fetchedItems.map((item) => ({
     ...item,
     removeData: () => handleRemoveData(item.id),
   }));
-
   const handleAllCheckboxChange = (isChecked: boolean) => {
     setIsAllChecked(isChecked);
     setSelectedItems(isChecked ? cartItems : []);
   };
-
   const handleCheckboxChange = (item: CartItem, isChecked: boolean) => {
     setSelectedItems((prev) =>
       isChecked
@@ -51,19 +36,19 @@ const ShopCartPage = () => {
         : prev.filter((selectedItem) => selectedItem.id !== item.id)
     );
   };
-
   const totalPrice = selectedItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-  useEffect(() => {
-    setSelectedItems(cartItems);
-    setIsAllChecked(true);
-  }, [fetchedItems]);
 
   useEffect(() => {
-    setIsAllChecked(cartItems.length === selectedItems.length);
-  }, [selectedItems, cartItems]);
+    const initialItems = fetchedItems.map((item) => ({
+      ...item,
+      removeData: () => handleRemoveData(item.id),
+    }));
+    setSelectedItems(initialItems);
+    setIsAllChecked(true);
+  }, [fetchedItems]);
 
   const openDialog = (itemId: string) => {
     setSelectedItemId(itemId);
