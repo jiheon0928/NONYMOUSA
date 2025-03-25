@@ -3,9 +3,9 @@ import ShopCartPage from "./components/ShopCartPage";
 
 const Page = () => {
   return (
-    <>
+    <section className="flex justify-center">
       <ShopCartPage />
-    </>
+    </section>
   );
 };
 
