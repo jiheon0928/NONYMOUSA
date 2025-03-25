@@ -56,21 +56,19 @@ export const translateSizeKey = (key: string) => {
   return map[key] || key;
 };
 
-export const handleAddToCart = (product: productData) => {
-  const { addToCart, cartItems, updateQuantity } = useCartStore.getState();
+export const handleAddToCart = async (product: productData) => {
+  const { cartItems, addToCart } = useCartStore.getState();
   const { quantity } = useQuantityStore.getState();
 
   const existingItem = cartItems.find((item) => item.id === product.productId);
 
-  if (existingItem) {
-    updateQuantity(product.productId, existingItem.quantity + quantity);
-  } else {
-    addToCart({
-      id: product.productId,
-      name: product.productName,
-      price: product.productPrice,
-      quantity: quantity,
-      image: product.productImage?.[0] ?? "",
-    });
-  }
+  const cartItem = {
+    id: product.productId,
+    name: product.productName,
+    price: product.productPrice,
+    quantity: existingItem ? existingItem.quantity + quantity : quantity,
+    image: product.productImage?.[0] ?? "",
+  };
+
+  await addToCart(cartItem);
 };

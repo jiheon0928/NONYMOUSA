@@ -108,8 +108,8 @@ const ProductInfo = ({ id }: ProductInfoProps) => {
           />
           <ProductCntBox price={productData.productPrice} />
           <ProductActionButtons
-            addToCart={() => {
-              handleAddToCart(productData);
+            addToCart={async () => {
+              await handleAddToCart(productData);
               setIsDialogOpen(true);
             }}
           />

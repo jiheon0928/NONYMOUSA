@@ -1,6 +1,7 @@
+"use client";
 import { create } from "zustand";
 import { CartItem, CartState } from "../kmg/types";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 
 export const useCartStore = create<CartState>((set) => ({
@@ -29,7 +30,7 @@ export const useCartStore = create<CartState>((set) => ({
     }
   },
 
-  addToCart: (item) =>
+  addToCart: async (item) => {
     set((state) => {
       const existing = state.cartItems.find((i) => i.id === item.id);
       if (existing) {
@@ -44,12 +45,34 @@ export const useCartStore = create<CartState>((set) => ({
       return {
         cartItems: [...state.cartItems, item],
       };
-    }),
+    });
 
-  updateQuantity: (id, newQuantity) =>
+    try {
+      await setDoc(doc(firestore, "shoppingCart", item.id.toString()), item, {
+        merge: true,
+      });
+      console.log("Firebase 저장 완료");
+    } catch (error) {
+      console.error("Firebase 저장 실패:", error);
+    }
+  },
+
+  updateQuantity: async (id, newQuantity) => {
     set((state) => ({
       cartItems: state.cartItems.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       ),
-    })),
+    }));
+
+    try {
+      await setDoc(
+        doc(firestore, "shoppingCart", id.toString()),
+        { quantity: newQuantity },
+        { merge: true }
+      );
+      console.log("수량 변경 Firebase 반영 완료");
+    } catch (error) {
+      console.error("Firebase 수량 변경 실패:", error);
+    }
+  },
 }));
