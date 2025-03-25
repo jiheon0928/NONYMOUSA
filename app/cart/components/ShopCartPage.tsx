@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
 import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
+import PurchaseButtons from "./GoodsBox/subcomponents/PurchaseButtons";
 
 type FetchedItem = {
   id: string;
@@ -180,6 +181,7 @@ const ShopCartPage = () => {
           />
         </div>
       </div>
+      <PurchaseButtons />
     </div>
   );
 };
