@@ -4,7 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 interface Data {
   id: string;
-  [key: string]: any; // 다른 필드에 대한 타입을 정의할 수 있습니다.
+  [key: string]: any;
 }
 
 const ShopPage = async () => {
@@ -15,21 +15,18 @@ const ShopPage = async () => {
   })) as Data[];
 
   const dataArr = data.sort((a, b) => b.productId - a.productId);
-  // console.log(dataArr);
+  // productPrice를 숫자 그대로 전달합니다.
   return (
     <div>
       <section className="mt-60 pb-[5vw] px-3">
         <article className="productWrap">
-          {dataArr.map((v) => {
-            const price = v.productPrice
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-            return <Product key={v.id} {...v} productPrice={price} />;
-          })}
+          {dataArr.map((v) => (
+            <Product key={v.id} {...v} productPrice={v.productPrice} />
+          ))}
         </article>
       </section>
     </div>
   );
 };
+
 export default ShopPage;

@@ -7,6 +7,8 @@ import {
   where,
   getDocs,
   updateDoc,
+  DocumentReference,
+  Timestamp,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "@/firebase/firebase";
@@ -53,7 +55,8 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
     useState("");
   const [existingImageURL, setExistingImageURL] = useState<string[]>([]);
   const [newImageFile, setNewImageFile] = useState<File[]>([]);
-  const [docRefForUpdate, setDocRefForUpdate] = useState<any>(null);
+  const [docRefForUpdate, setDocRefForUpdate] =
+    useState<DocumentReference | null>(null);
 
   useEffect(() => {
     const fetchEditProductData = async () => {

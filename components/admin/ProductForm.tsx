@@ -1,8 +1,13 @@
-// components/ProductForm.tsx
 "use client";
 
 import React, { useState, FormEvent, JSX } from "react";
-import { collection, addDoc, runTransaction, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  runTransaction,
+  doc,
+  Firestore,
+} from "firebase/firestore";
 import { firestore, storage } from "@/firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
@@ -141,6 +146,7 @@ export default function ProductForm(): JSX.Element {
         alert("이미지 업로드에 실패했습니다.");
         return;
       }
+      // runTransaction을 사용하여 products 카운터 증가 후 새 상품 ID를 받습니다.
       const newProductId = await runTransaction(
         firestore,
         async (transaction) => {

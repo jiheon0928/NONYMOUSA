@@ -1,7 +1,12 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
 
@@ -13,7 +18,7 @@ type ProductData = {
   productPrice: number;
   productCategory: string;
   productImage: string[];
-  productExpectedShippingDate: any;
+  productExpectedShippingDate?: string | Timestamp | null;
   productDeliveryMethod: string;
   productDeliveryPrice: number;
 };
@@ -62,7 +67,7 @@ const AdminProductList = () => {
     return <p className="text-center mt-4">데이터를 불러오는 중...</p>;
   }
 
-  if (products.length == 0) {
+  if (products.length === 0) {
     return <p className="text-center mt-4">등록된 제품이 없습니다.</p>;
   }
 
@@ -115,12 +120,12 @@ const AdminProductList = () => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 {v.productExpectedShippingDate
-                  ? typeof v.productExpectedShippingDate.toDate == "function"
+                  ? v.productExpectedShippingDate instanceof Timestamp
                     ? v.productExpectedShippingDate
                         .toDate()
                         .toLocaleDateString()
                     : new Date(
-                        v.productExpectedShippingDate
+                        v.productExpectedShippingDate as string
                       ).toLocaleDateString()
                   : "없음"}
               </td>
