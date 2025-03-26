@@ -4,14 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyDvvMBjTm6qitIPgD6BZcqxV7eHehqz7DM",
+  authDomain: "nonymousaa.firebaseapp.com",
+  databaseURL:
+    "https://nonymousaa-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "nonymousaa",
+  storageBucket: "nonymousaa.firebasestorage.app",
+  messagingSenderId: "1073324719510",
+  appId: "1:1073324719510:web:05c0a70a34b9dc073671b7",
+  measurementId: "G-2XVT4GCYFY",
 };
 
 // Firebase 앱 초기화
