@@ -1,15 +1,8 @@
-// ProductPrice.tsx
+import Cap from "@/components/shopPage/Cap";
 import React from "react";
 
-type ProductPriceProps = {
-  productPrice: number;
+const CapPage = () => {
+  return <Cap />;
 };
 
-const ProductPrice: React.FC<ProductPriceProps> = ({ productPrice }) => {
-  const formattedPrice = productPrice
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return <p>{formattedPrice} 원</p>;
-};
-
-export default ProductPrice;
+export default CapPage;

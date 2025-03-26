@@ -68,3 +68,8 @@ a {
   font-weight: 300;
   line-height: 20px;
 }
+
+:root {
+  --font-geist-sans: ...;
+  --font-geist-mono: ...;
+}

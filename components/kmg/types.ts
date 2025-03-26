@@ -65,7 +65,7 @@ export type productData = {
   productManufacturer: string;
   productDetails: string;
   productId: number;
-  productSize: string | number[];
+  productSize: SizeInfo[];
   productDeliveryMethod: string;
   productCode: string;
   productPrice: number;

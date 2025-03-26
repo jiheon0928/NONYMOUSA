@@ -25,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`max-w-full ${geistSans.variable} ${geistMono.variable}`}
-      >
+      <body suppressHydrationWarning className="max-w-full">
         {children}
       </body>
     </html>
