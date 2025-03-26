@@ -25,7 +25,7 @@ const Navigation = () => {
         <ShopOtion event={event} />
       </div>
       <div className="rignt">
-        <Link href={"/wish"}>
+        <Link href={""}>
           <MenuText text={"WISH"} />
         </Link>
         <span className="mx-4">|</span>

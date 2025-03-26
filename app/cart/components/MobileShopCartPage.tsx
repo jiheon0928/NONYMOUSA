@@ -3,16 +3,11 @@
 import { useEffect } from "react";
 import useItems from "../items/useItems";
 import useCartStore from "@/components/zustand/cartData";
-import GoodsInfo from "./GoodsBox/GoodsInfo";
-import ShopCart from "./GoodsBox/ShopCart";
 import TextHandle from "./GoodsBox/subcomponents/TextHandle";
 import { AiOutlineClose, AiOutlineQuestionCircle } from "react-icons/ai";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
-import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
-import PurchaseButtons from "./GoodsBox/subcomponents/PurchaseButtons";
 import MobileUpDownHandle from "./GoodsBox/subcomponents/MobileUpDownHandle";
-import { div } from "framer-motion/client";
 import MobilePurchaseButtons from "./GoodsBox/subcomponents/MobilePurchaseBButton";
 
 const MobileShopCartPage = () => {
@@ -56,7 +51,7 @@ const MobileShopCartPage = () => {
         <span>전체 선택</span>
       </div>
       {cartItems.map((v, i) => (
-        <div className="px-5 mb-3">
+        <div className="px-5 mb-3" key={v.id}>
           <div className="flex gap-4">
             <input
               className="w-4 h-4 appearance-none rounded-sm border border-gray-400 checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex flex checked:items-center checked:flex-row checked:justify-center"

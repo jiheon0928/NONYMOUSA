@@ -1,5 +1,3 @@
-import Link from "next/link";
-import MenuText from "./menuText";
 import Option from "./option";
 
 type ShopOtionProps = {
