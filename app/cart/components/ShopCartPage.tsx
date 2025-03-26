@@ -42,8 +42,8 @@ const ShopCartPage = () => {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen mt-96 w-7/12 ">
-      <div className="">
+    <div className="hidden md:flex  flex-col justify-center items-center mt-64 w-2/3 ">
+      <div className="w-full">
         <ShopCart
           shopCartText="장바구니"
           shopCartCountStyle="text-[11px] bg-black w-5 h-5 rounded-full text-white flex justify-center items-center"
@@ -55,7 +55,7 @@ const ShopCartPage = () => {
           onAllCheckboxChange={toggleAllCheckbox}
         />
         <div className="flex">
-          <table className="w-full ">
+          <table className="w-full">
             <tbody>
               {cartItems.map((v, i) => (
                 <tr key={i}>

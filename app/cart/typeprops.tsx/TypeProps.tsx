@@ -26,7 +26,7 @@ export type ImageHandleProps = {
 
 export type TextHandleProps = {
   className: string;
-  text: string | number;
+  text: string | number | React.ReactElement;
 };
 
 export type ShopCartListProps = {
