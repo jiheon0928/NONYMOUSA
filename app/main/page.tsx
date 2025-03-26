@@ -100,14 +100,14 @@ const MainPage = () => {
           }}
         >
           {data.map((v) => (
-            <SwiperSlide key={v.id} className="text-center text-xs">
+            <SwiperSlide key={v.productId} className="text-center text-xs">
               <div
                 className="cursor-pointer"
                 onClick={() => router.push(`/detail/${v.productId}`)}
               >
                 <img
-                  src={v.productImage}
-                  alt={v.productName || `Slide ${v.id}`}
+                  src={v.productImage[0]}
+                  alt={v.productName || `Slide ${v.productId}`}
                   className="w-full h-[600px] object-cover"
                 />
                 <h3 className="text-xs whitespace-nowrap mt-8">

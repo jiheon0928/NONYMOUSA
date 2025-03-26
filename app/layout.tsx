@@ -26,13 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`max-w-full ${geistSans.variable} ${geistMono.variable}`}
       >
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );
