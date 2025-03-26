@@ -1,8 +1,9 @@
 import Link from "next/link";
-import FooterLeft from "./footerLeft";
-import FooterCenter from "./footerCenter";
-import FooterRight from "./footerRight";
+
 import MainLogo from "../MainLogo";
+import FooterLeft from "./subComponents/footerLeft";
+import FooterCenter from "./subComponents/footerCenter";
+import FooterRight from "./subComponents/footerRight";
 
 const Footer = () => {
   return (

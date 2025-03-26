@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Scrollbar } from "swiper/modules";
 import {
   FreeMode,
   Pagination,
@@ -17,7 +18,6 @@ import "swiper/css/effect-fade";
 import { useProductStore } from "@/components/zustand/state";
 import ProductColors from "../shop/components/mainComponent/subComponents/ProductColors";
 import { useRouter } from "next/navigation";
-
 const MainPage = () => {
   // useRouter()를 컴포넌트 내부에서 호출
   const router = useRouter();
@@ -39,11 +39,14 @@ const MainPage = () => {
           effect="fade"
           navigation={true}
           pagination={{ clickable: true }}
-          modules={[EffectFade, Navigation, Pagination, Autoplay]}
-          className="w-full h-full"
+          modules={[EffectFade, Navigation, Pagination, Autoplay, Scrollbar]}
+          className="w-full h-full mySwiper"
           loop={true}
           autoplay={true}
           speed={2000}
+          scrollbar={{
+            hide: true,
+          }}
         >
           <SwiperSlide>
             <img
@@ -91,15 +94,16 @@ const MainPage = () => {
           spaceBetween={30}
           freeMode={true}
           pagination={{ clickable: true }}
-          modules={[FreeMode, Pagination]}
+          modules={[FreeMode]}
           className="w-full h-full overflow-hidden"
           breakpoints={{
-            1280: { slidesPerView: 3, spaceBetween: 30 },
-            720: { slidesPerView: 2, spaceBetween: 30 },
+            1980: { slidesPerView: 4, spaceBetween: 30 },
+            1440: { slidesPerView: 3, spaceBetween: 30 },
+            1000: { slidesPerView: 2, spaceBetween: 30 },
             0: { slidesPerView: 1 },
           }}
         >
-          {data.map((v) => (
+          {data.slice(0, 8).map((v) => (
             <SwiperSlide key={v.productId} className="text-center text-xs">
               <div
                 className="cursor-pointer"

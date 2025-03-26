@@ -1,4 +1,4 @@
-import FooterText from "./subComponents/footerText";
+import FooterText from "./footerText";
 
 const FooterLeft = () => {
   return (

@@ -1,4 +1,4 @@
-import AdminProductList from "@/components/admin/subcomponents/AdminProductList";
+import AdminProductList from "@/components/admin/AdminProductList";
 
 const ProductListPage = () => {
   return (

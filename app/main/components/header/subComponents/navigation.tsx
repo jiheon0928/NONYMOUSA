@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import MenuText from "./subComponents/menuText";
-import ShopOtion from "./subComponents/shopOption";
+import MenuText from "./menuText";
+import ShopOtion from "./shopOption";
 import Link from "next/link";
 
 const Navigation = () => {

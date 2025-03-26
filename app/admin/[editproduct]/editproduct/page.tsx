@@ -1,6 +1,6 @@
 "use client";
 
-import EditProductForm from "@/components/admin/subcomponents/EditProductForm";
+import EditProductForm from "@/components/admin/EditProductForm";
 import { useParams } from "next/navigation";
 
 const EditProductPage = () => {

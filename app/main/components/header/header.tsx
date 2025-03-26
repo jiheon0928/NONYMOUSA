@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Navigation from "./navigation";
+import Navigation from "./subComponents/navigation";
 import MainLogo from "../MainLogo";
 
 const Header = () => {

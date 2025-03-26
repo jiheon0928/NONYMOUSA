@@ -1,0 +1,21 @@
+/* pagination 위치 조정 (필요시) */
+.mySwiper .swiper-pagination {
+  bottom: 20px; /* 하단에서 20px 위쪽 */
+}
+
+/* 기본 bullet 스타일 */
+.mySwiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  margin: 0 4px;
+  border-radius: 50%;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+/* 활성화된 bullet 스타일 */
+.mySwiper .swiper-pagination-bullet-active {
+  background-color: #ffffff;
+  transform: scale(1.2);
+}
