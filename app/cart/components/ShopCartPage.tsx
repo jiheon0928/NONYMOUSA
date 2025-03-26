@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useItems from "../items/useItems";
 import GoodsInfo from "./GoodsBox/GoodsInfo";
 import ShopCart from "./GoodsBox/ShopCart";
@@ -9,64 +9,37 @@ import { AiOutlineClose } from "react-icons/ai";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
 import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
-import { CartItem } from "../typeprops.tsx/TypeProps";
 import PurchaseButtons from "./GoodsBox/subcomponents/PurchaseButtons";
+import useCartStore from "@/components/zustand/cartData";
 
 const ShopCartPage = () => {
   const fetchedItems = useItems();
-  const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
-  const [isAllChecked, setIsAllChecked] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const handleRemoveData = (id: string) => {
-    console.log(`${id} 삭제!`);
-  };
-  const cartItems: CartItem[] = fetchedItems.map((item) => ({
-    ...item,
-    removeData: () => handleRemoveData(item.id),
-  }));
-  const handleAllCheckboxChange = (isChecked: boolean) => {
-    setIsAllChecked(isChecked);
-    setSelectedItems(isChecked ? cartItems : []);
-  };
-  const handleCheckboxChange = (item: CartItem, isChecked: boolean) => {
-    setSelectedItems((prev) =>
-      isChecked
-        ? [...prev, item]
-        : prev.filter((selectedItem) => selectedItem.id !== item.id)
-    );
-  };
+  const {
+    cartItems,
+    selectedItems,
+    isAllChecked,
+    isDialogOpen,
+    selectedItemId,
+    setCartItems,
+    toggleAllCheckbox,
+    toggleItemCheckbox,
+    openDialog,
+    closeDialog,
+    changeQuantity,
+  } = useCartStore();
+
+  useEffect(() => {
+    const itemsWithRemove = fetchedItems.map((item) => ({
+      ...item,
+      removeData: () => console.log(`${item.id} 삭제!`),
+    }));
+    setCartItems(itemsWithRemove);
+  }, [fetchedItems, setCartItems]);
+
   const totalPrice = selectedItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-
-  useEffect(() => {
-    const initialItems = fetchedItems.map((item) => ({
-      ...item,
-      removeData: () => handleRemoveData(item.id),
-    }));
-    setSelectedItems(initialItems);
-    setIsAllChecked(true);
-  }, [fetchedItems]);
-
-  const openDialog = (itemId: string) => {
-    setSelectedItemId(itemId);
-    setIsDialogOpen(true);
-  };
-
-  const closeDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedItemId(null);
-  };
-
-  const handleQuantityChange = (itemId: string, newQuantity: number) => {
-    setSelectedItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen mt-96 w-7/12 ">
@@ -79,7 +52,7 @@ const ShopCartPage = () => {
         />
         <GoodsInfo
           isAllChecked={isAllChecked}
-          onAllCheckboxChange={handleAllCheckboxChange}
+          onAllCheckboxChange={toggleAllCheckbox}
         />
         <div className="flex">
           <table className="w-full ">
@@ -91,9 +64,7 @@ const ShopCartPage = () => {
                       className="w-4 h-4 appearance-none rounded-sm border border-gray-400 checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex flex checked:items-center checked:flex-row checked:justify-center"
                       type="checkbox"
                       checked={selectedItems.some((item) => item.id === v.id)}
-                      onChange={(e) =>
-                        handleCheckboxChange(v, e.target.checked)
-                      }
+                      onChange={(e) => toggleItemCheckbox(v, e.target.checked)}
                     />
                     <ImgButtonText
                       image={v.image}
@@ -110,7 +81,7 @@ const ShopCartPage = () => {
                       <UpDownHandle
                         item={v}
                         closeDialog={closeDialog}
-                        onQuantityChange={handleQuantityChange}
+                        onQuantityChange={changeQuantity}
                       />
                     )}
 
