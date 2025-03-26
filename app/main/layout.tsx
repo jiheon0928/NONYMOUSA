@@ -26,10 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div
-      className={`max-w-[100vw] ${geistSans.variable} ${geistMono.variable}`}
-    >
-      {children}
+    <div>
+      <Header />
+      <div
+        className={`max-w-[100vw] ${geistSans.variable} ${geistMono.variable}`}
+      >
+        {children}
+      </div>
+      <Footer />
     </div>
   );
 }

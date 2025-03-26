@@ -30,9 +30,7 @@ export default function RootLayout({
       <body
         className={`max-w-full ${geistSans.variable} ${geistMono.variable}`}
       >
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );
