@@ -1,6 +1,6 @@
+import { useQuantityChange } from "@/app/cart/items/quantityChangeHandle";
 import { HiOutlineMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
-import { useQuantityChange } from "@/app/cart/items/quantityChangeHandle";
 
 // `Item` 타입을 직접 정의 (이미 있는 타입을 수정하거나 추가할 수 있음)
 type Item = {

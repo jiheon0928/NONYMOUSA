@@ -1,8 +1,8 @@
 // import QndExchange from "@/components/kmg/QndExchange";
 
 import Exchange from "@/components/kmg/exchange/Exchange";
-import Header from "../main/components/header/header";
 import Footer from "../main/components/footer/footer";
+import Header from "../main/components/header/header";
 
 const DetailLayout = ({
   children,
