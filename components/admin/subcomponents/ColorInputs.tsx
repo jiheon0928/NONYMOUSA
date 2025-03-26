@@ -15,7 +15,6 @@ export default function ColorInputs({
 }: ColorInputsProps): JSX.Element {
   return (
     <div>
-      <label className="block font-semibold mb-1">상품 색상</label>
       {colors.map((color, index) => (
         <div key={`color-${index}`} className="flex items-center mb-2">
           <input

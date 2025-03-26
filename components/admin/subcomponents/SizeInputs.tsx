@@ -21,7 +21,6 @@ const SizeInputs: React.FC<SizeInputsProps> = ({
 }) => {
   return (
     <div>
-      <label className="block font-semibold mb-1">상품 사이즈</label>
       {sizes.map((size, index) => (
         <div key={`size-${index}`} className="flex items-center gap-2 mb-2">
           <input
