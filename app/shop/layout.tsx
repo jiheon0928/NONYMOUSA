@@ -4,7 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import "../main/css/media.css";
 import Header from "../main/components/header/header";
-const HeaderLayout = ({ children }: any) => {
+
+const HeaderLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Header />
@@ -13,4 +14,5 @@ const HeaderLayout = ({ children }: any) => {
     </div>
   );
 };
+
 export default HeaderLayout;

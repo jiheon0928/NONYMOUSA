@@ -1,7 +1,12 @@
+import React, { ReactNode } from "react";
 import Footer from "../main/components/footer/footer";
 import Header from "../main/components/header/header";
 
-export const AdminLayout = ({ children }: any) => {
+interface AdminLayoutProps {
+  children: ReactNode;
+}
+
+export const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <div>
       <Header />
