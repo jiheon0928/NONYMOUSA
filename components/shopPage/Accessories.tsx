@@ -1,20 +1,14 @@
 "use client";
 import Product from "@/app/shop/components/mainComponent/Product";
-import { firestore } from "@/firebase/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { useProductStore } from "../zustand/state";
+import { useEffect } from "react";
 
-interface Data {
-  id: string;
-  [key: string]: any; // 다른 필드에 대한 타입을 정의할 수 있습니다.
-}
+const Accessories = () => {
+  const { data, fetchData, loading } = useProductStore();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-const Accessories = async () => {
-  const querySnapshot = await getDocs(collection(firestore, "products"));
-  const data = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Data[];
-  console.log(data);
   const accessoriesData = data.filter((v) => {
     return v.productCategory == "accessories";
   });
@@ -30,7 +24,7 @@ const Accessories = async () => {
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-            return <Product key={v.id} {...v} productPrice={price} />;
+            return <Product key={v.productId} {...v} productPrice={price} />;
           })}
         </div>
       </div>

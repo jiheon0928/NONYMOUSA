@@ -1,36 +1,29 @@
 "use client";
 import Product from "@/app/shop/components/mainComponent/Product";
-import { firestore } from "@/firebase/firebase";
-import { collection, getDocs } from "firebase/firestore";
 
-interface Data {
-  id: string;
-  [key: string]: any; // 다른 필드에 대한 타입을 정의할 수 있습니다.
-}
+import { useProductStore } from "../zustand/state";
+import { useEffect } from "react";
 
-const Cap = async () => {
-  const querySnapshot = await getDocs(collection(firestore, "products"));
-  const data = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Data[];
-  console.log(data);
-  const accessoriesData = data.filter((v) => {
+const Cap = () => {
+  const { data, fetchData, loading } = useProductStore();
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const capData = data.filter((v) => {
     return v.productCategory == "cap";
   });
-  const accessoriesDataArr = accessoriesData.sort(
-    (a, b) => b.productId - a.productId
-  );
+  const capDataArr = capData.sort((a, b) => b.productId - a.productId);
   return (
     <>
       <div className="mt-[250px] pb-[5vw] px-4">
         <div className="productWrap">
-          {accessoriesDataArr.map((v) => {
+          {capDataArr.map((v) => {
             const price = v.productPrice
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-            return <Product key={v.id} {...v} productPrice={price} />;
+            return <Product key={v.productId} {...v} productPrice={price} />;
           })}
         </div>
       </div>
