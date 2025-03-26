@@ -1,7 +1,7 @@
 // useQuantityChange.ts
-import { useState } from "react";
 import { firestore } from "@/firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 
 export const useQuantityChange = (initialQuantity: number) => {
   const [quantity, setQuantity] = useState(initialQuantity);

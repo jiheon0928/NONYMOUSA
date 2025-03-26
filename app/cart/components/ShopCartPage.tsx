@@ -1,16 +1,16 @@
 "use client";
 
+import useCartStore from "@/components/zustand/cartData";
 import { useEffect } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import useItems from "../items/useItems";
 import GoodsInfo from "./GoodsBox/GoodsInfo";
-import ShopCart from "./GoodsBox/ShopCart";
-import TextHandle from "./GoodsBox/subcomponents/TextHandle";
-import { AiOutlineClose } from "react-icons/ai";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
+import ShopCart from "./GoodsBox/ShopCart";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
-import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
 import PurchaseButtons from "./GoodsBox/subcomponents/PurchaseButtons";
-import useCartStore from "@/components/zustand/cartData";
+import TextHandle from "./GoodsBox/subcomponents/TextHandle";
+import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
 
 const ShopCartPage = () => {
   const fetchedItems = useItems();

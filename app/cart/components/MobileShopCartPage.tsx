@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import useItems from "../items/useItems";
 import useCartStore from "@/components/zustand/cartData";
-import TextHandle from "./GoodsBox/subcomponents/TextHandle";
+import { useEffect } from "react";
 import { AiOutlineClose, AiOutlineQuestionCircle } from "react-icons/ai";
+import useItems from "../items/useItems";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ChangeHandle from "./GoodsBox/subcomponents/ChangeHandle";
-import MobileUpDownHandle from "./GoodsBox/subcomponents/MobileUpDownHandle";
 import MobilePurchaseButtons from "./GoodsBox/subcomponents/MobilePurchaseBButton";
+import MobileUpDownHandle from "./GoodsBox/subcomponents/MobileUpDownHandle";
+import TextHandle from "./GoodsBox/subcomponents/TextHandle";
 
 const MobileShopCartPage = () => {
   const fetchedItems = useItems();
@@ -50,7 +50,7 @@ const MobileShopCartPage = () => {
         />
         <span>전체 선택</span>
       </div>
-      {cartItems.map((v, i) => (
+      {cartItems.map((v) => (
         <div className="px-5 mb-3" key={v.id}>
           <div className="flex gap-4">
             <input
