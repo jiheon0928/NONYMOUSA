@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"], // TypeScript 플러그인 사용
   rules: {
-    "@typescript-eslint/no-unused-vars": "off", // 사용되지 않는 변수에 대한 경고 비활성화
-    "@typescript-eslint/no-explicit-any": "off", // any 타입에 대한 경고 비활성화
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };
