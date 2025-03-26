@@ -10,7 +10,7 @@ const Header = () => {
       <h1>
         <Link href={"/main"}>
           <MainLogo
-            link={"https://cdn.imweb.me/thumbnail/20250315/5bb4088474559.png"}
+            link={"https://cdn.imweb.me/thumbnail/20250324/d37f6c52b31db.png"}
           />
         </Link>
       </h1>
