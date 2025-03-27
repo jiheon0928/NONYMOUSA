@@ -144,7 +144,7 @@ const MobileShopCartPage = () => {
       <div className="flex items-center justify-between px-5">
         <div className="py-2 text-xs border-black">{`배송비`}</div>
         <TextHandle
-          text={`${totalPrice >= 50000 ? "무료" : "￦3000"} `}
+          text={`${totalPrice >= 50000 ? "무료" : "￦3000"}`}
           className="text-xs "
         />
       </div>

@@ -107,7 +107,7 @@ const ShopCartPage = () => {
                       rowSpan={300}
                       className="text-center align-middle space-y-4 w-2/12 border-t border-gray-400"
                     >
-                      {` ${totalPrice >= 50000 ? "무료" : "￦3000"} `}
+                      {`${totalPrice >= 50000 ? "무료" : "￦3000"}`}
                     </td>
                   )}
                 </tr>
