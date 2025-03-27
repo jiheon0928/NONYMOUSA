@@ -1,9 +1,7 @@
 "use client";
 
 import useCartStore from "@/components/zustand/cartData";
-import { useEffect } from "react";
 import { AiOutlineClose, AiOutlineQuestionCircle } from "react-icons/ai";
-import useItems from "../items/useItems";
 import GoodsInfo from "./GoodsBox/GoodsInfo";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
 import ShopCart from "./GoodsBox/ShopCart";
@@ -13,7 +11,6 @@ import TextHandle from "./GoodsBox/subcomponents/TextHandle";
 import UpDownHandle from "./GoodsBox/subcomponents/UpDownHandle";
 
 const ShopCartPage = () => {
-  const fetchedItems = useItems();
   const {
     cartItems,
     selectedItems,
@@ -101,7 +98,7 @@ const ShopCartPage = () => {
                       className="text-center align-middle space-y-4 w-2/12 border-t border-gray-400"
                     >
                       {totalPrice >= 50000 ? (
-                        <div className="flex items-center">
+                        <div className="flex items-center justify-center">
                           무료 <AiOutlineQuestionCircle />
                         </div>
                       ) : (

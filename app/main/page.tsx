@@ -118,10 +118,7 @@ const MainPage = () => {
                   {v.productName}
                 </h3>
                 <p>{v.productPrice}</p>
-                <br />
-                <p>{v.productInfo}</p>
-                <br />
-                <p>{v.productNotice}</p>
+
                 <br />
                 <div>
                   <ProductColors
