@@ -1,11 +1,5 @@
+import { ShopCartProps } from "../../typeprops.tsx/TypeProps";
 import TextHandle from "./subcomponents/TextHandle";
-
-type ShopCartProps = {
-  ShopCartStlye: string;
-  shopCartText: string;
-  shopCartCountStyle: string;
-  shopCartCountText: string;
-};
 
 const ShopCart = ({
   ShopCartStlye,

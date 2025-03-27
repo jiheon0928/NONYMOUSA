@@ -59,3 +59,18 @@ export type FetchedItem = {
 export type CartItem = FetchedItem & {
   removeData: () => void;
 };
+
+export type Item = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+};
+
+export type ShopCartProps = {
+  ShopCartStlye: string;
+  shopCartText: string;
+  shopCartCountStyle: string;
+  shopCartCountText: string;
+};

@@ -3,14 +3,7 @@
 import { firestore } from "@/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-interface Item {
-  id: string;
-  quantity: number;
-  image: string;
-  name: string;
-  price: number;
-}
+import { Item } from "../typeprops.tsx/TypeProps";
 
 const useItems = () => {
   const [itemArr, setItemArr] = useState<Item[]>([]);
@@ -36,7 +29,7 @@ const useItems = () => {
             return null;
           }
         })
-        .filter((item): item is Item => item !== null); // null 제거
+        .filter((item): item is Item => item !== null);
 
       setItemArr(items);
     } catch (error) {

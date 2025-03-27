@@ -35,10 +35,7 @@ const useCartStore = create<CartState>((set, get) => ({
 
   setCartItems: (items) =>
     set(() => ({
-      cartItems: items.map((item) => ({
-        ...item,
-        removeData: () => console.log(`${item.id} 삭제!`),
-      })),
+      cartItems: items,
       selectedItems: items,
     })),
 
