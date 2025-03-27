@@ -132,7 +132,14 @@ export default function ProductForm(): JSX.Element {
         productId: newProductId,
         productPrice: Number(formData.productPrice),
         productDeliveryPrice: Number(formData.productDeliveryPrice),
-        productInfo,
+        productInfo: productInfo
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line !== ""),
+        productNotice: formData.productNotice
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line !== ""),
         productImage: imageURLs,
         productExpectedShippingDate: productExpectedShippingDate
           ? new Date(productExpectedShippingDate + "T00:00:00")
