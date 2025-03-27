@@ -2,7 +2,7 @@
 
 import useCartStore from "@/components/zustand/cartData";
 import { useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineQuestionCircle } from "react-icons/ai";
 import useItems from "../items/useItems";
 import GoodsInfo from "./GoodsBox/GoodsInfo";
 import ImgButtonText from "./GoodsBox/ImgButtonText";
@@ -107,7 +107,13 @@ const ShopCartPage = () => {
                       rowSpan={300}
                       className="text-center align-middle space-y-4 w-2/12 border-t border-gray-400"
                     >
-                      {`${totalPrice >= 50000 ? "무료" : "￦3000"}`}
+                      {totalPrice >= 50000 ? (
+                        <>
+                          무료 <AiOutlineQuestionCircle />
+                        </>
+                      ) : (
+                        "￦3000"
+                      )}
                     </td>
                   )}
                 </tr>
