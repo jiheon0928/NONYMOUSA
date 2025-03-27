@@ -20,21 +20,14 @@ const ShopCartPage = () => {
     isAllChecked,
     isDialogOpen,
     selectedItemId,
-    setCartItems,
+
     toggleAllCheckbox,
     toggleItemCheckbox,
     openDialog,
     closeDialog,
     changeQuantity,
+    removeItem,
   } = useCartStore();
-
-  useEffect(() => {
-    const itemsWithRemove = fetchedItems.map((item) => ({
-      ...item,
-      removeData: () => console.log(`${item.id} 삭제!`),
-    }));
-    setCartItems(itemsWithRemove);
-  }, [fetchedItems, setCartItems]);
 
   const totalPrice = selectedItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -70,7 +63,7 @@ const ShopCartPage = () => {
                       image={v.image}
                       name={v.name}
                       removeDataText={<AiOutlineClose />}
-                      removeFunc={v.removeData}
+                      removeFunc={() => removeItem(v.id)}
                       nameStyle="text-[12px]"
                       removeFuncStyle=""
                     />

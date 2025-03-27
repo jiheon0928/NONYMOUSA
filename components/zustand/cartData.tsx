@@ -23,6 +23,7 @@ type CartState = {
   openDialog: (itemId: string) => void;
   closeDialog: () => void;
   changeQuantity: (itemId: string, newQuantity: number) => void;
+  removeItem: (itemId: string) => void; // removeItem 함수 추가
 };
 
 const useCartStore = create<CartState>((set, get) => ({
@@ -34,10 +35,25 @@ const useCartStore = create<CartState>((set, get) => ({
   totalPrice: 0,
 
   setCartItems: (items) =>
-    set(() => ({
-      cartItems: items,
-      selectedItems: items,
-    })),
+    set(() => {
+      const itemsWithRemove = items.map((item) => ({
+        ...item,
+        removeData: () => {
+          set((state) => ({
+            cartItems: state.cartItems.filter(
+              (cartItem) => cartItem.id !== item.id
+            ),
+            selectedItems: state.selectedItems.filter(
+              (selectedItem) => selectedItem.id !== item.id
+            ),
+          }));
+        },
+      }));
+      return {
+        cartItems: itemsWithRemove,
+        selectedItems: itemsWithRemove,
+      };
+    }),
 
   toggleAllCheckbox: (isChecked) =>
     set(() => ({
@@ -71,6 +87,12 @@ const useCartStore = create<CartState>((set, get) => ({
       selectedItems: state.selectedItems.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
       ),
+    })),
+
+  removeItem: (itemId) =>
+    set((state) => ({
+      cartItems: state.cartItems.filter((item) => item.id !== itemId),
+      selectedItems: state.selectedItems.filter((item) => item.id !== itemId),
     })),
 }));
 

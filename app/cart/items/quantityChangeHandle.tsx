@@ -32,7 +32,6 @@ export const useQuantityChange = (initialQuantity: number) => {
   };
 
   return {
-    quantity,
     tempQuantity,
     increaseQuantity,
     decreaseQuantity,
