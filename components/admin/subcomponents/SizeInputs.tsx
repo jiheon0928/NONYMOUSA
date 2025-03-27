@@ -21,12 +21,12 @@ const SizeInputs: React.FC<SizeInputsProps> = ({
 }) => {
   return (
     <div>
-      {sizes.map((size, index) => (
-        <div key={`size-${index}`} className="flex items-center gap-2 mb-2">
+      {sizes.map((size, i) => (
+        <div key={`size-${i}`} className="flex items-center gap-2 mb-2">
           <input
             type="text"
             value={size.key}
-            onChange={(e) => onSizeChange(index, "key", e.target.value)}
+            onChange={(e) => onSizeChange(i, "key", e.target.value)}
             placeholder="키"
             className="w-1/3 border border-gray-300 rounded px-3 py-2"
             required
@@ -34,15 +34,15 @@ const SizeInputs: React.FC<SizeInputsProps> = ({
           <input
             type="text"
             value={size.value}
-            onChange={(e) => onSizeChange(index, "value", e.target.value)}
+            onChange={(e) => onSizeChange(i, "value", e.target.value)}
             placeholder="값"
             className="w-1/3 border border-gray-300 rounded px-3 py-2"
             required
           />
-          {index != 0 && (
+          {i != 0 && (
             <button
               type="button"
-              onClick={() => onRemoveSize(index)}
+              onClick={() => onRemoveSize(i)}
               className="ml-2 text-red-500 hover:underline"
             >
               취소

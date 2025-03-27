@@ -1,25 +1,20 @@
 "use client";
 
-import React, { useEffect, useState, FormEvent, JSX } from "react";
+import { EditProductData, ProductFormData } from "@/app/types/admintype";
+import { firestore, storage } from "@/firebase/firebase";
 import {
   collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
   DocumentReference,
-  Timestamp,
+  getDocs,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { firestore, storage } from "@/firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/navigation";
-import { EditProductData } from "@/app/types/admintype";
-import InputField from "./subcomponents/InputField";
-import ColorInputs from "./subcomponents/ColorInputs";
-import SelectField from "./subcomponents/SelectField";
-import TextAreaField from "./subcomponents/TextAreaField";
-import SizeInputs from "./subcomponents/SizeInputs";
+import React, { FormEvent, JSX, useEffect, useState } from "react";
 import FileUploadPreview from "./subcomponents/FileUploadPreview";
+import { ProductFormFields } from "./subcomponents/ProductFormFields";
 
 export type EditProductFormProps = {
   productId: string;
@@ -29,17 +24,12 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductFormData>({
     productCode: "",
     productHexCodes: [""],
     productName: "",
     productPrice: "",
-    productCategory: "cap" as
-      | "cap"
-      | "outer"
-      | "top"
-      | "bottom"
-      | "accessories",
+    productCategory: "cap",
     productNotice: "",
     productOrigin: "",
     productManufacturer: "",
@@ -47,7 +37,7 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
     productDeliveryPrice: "",
     productDetails: "",
     productMaterials: "",
-    productSize: [] as { key: string; value: string }[],
+    productSize: [{ key: "", value: "" }],
     productSizeInfo: "",
   });
   const [productInfo, setProductInfo] = useState("");
@@ -124,10 +114,10 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
     }
   };
 
-  const handleColorChange = (index: number, value: string) =>
+  const handleColorChange = (i: number, v: string) =>
     setFormData((prev) => {
       const newColors = [...prev.productHexCodes];
-      newColors[index] = value;
+      newColors[i] = v;
       return { ...prev, productHexCodes: newColors };
     });
 
@@ -136,11 +126,12 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
       ...prev,
       productHexCodes: [...prev.productHexCodes, ""],
     }));
-  const removeColorInput = (index: number) => {
-    if (index === 0) return;
+
+  const removeColorInput = (i: number) => {
+    if (i === 0) return;
     setFormData((prev) => ({
       ...prev,
-      productHexCodes: prev.productHexCodes.filter((_, i) => i !== index),
+      productHexCodes: prev.productHexCodes.filter((_, b) => b !== i),
     }));
   };
 
@@ -160,6 +151,7 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
       ...prev,
       productSize: [...prev.productSize, { key: "", value: "" }],
     }));
+
   const removeSizeInput = (index: number) =>
     setFormData((prev) => ({
       ...prev,
@@ -222,143 +214,28 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">제품 수정</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <InputField
-          label="상품 코드"
-          name="productCode"
-          value={formData.productCode}
-          onChange={handleInputChange}
-          required
+        <ProductFormFields
+          formData={formData}
+          productInfo={productInfo}
+          productExpectedShippingDate={productExpectedShippingDate}
+          handleInputChange={handleInputChange}
+          handleColorChange={handleColorChange}
+          addColorInput={addColorInput}
+          removeColorInput={removeColorInput}
+          handleSizeChange={handleSizeChange}
+          addSizeInput={addSizeInput}
+          removeSizeInput={removeSizeInput}
+          setProductInfo={setProductInfo}
+          setProductExpectedShippingDate={setProductExpectedShippingDate}
         />
-        <div>
-          <label className="block font-semibold mb-1">상품 색상</label>
-          <ColorInputs
-            colors={formData.productHexCodes}
-            onColorChange={handleColorChange}
-            onAddColor={addColorInput}
-            onRemoveColor={removeColorInput}
-          />
-        </div>
-        <InputField
-          label="상품명"
-          name="productName"
-          value={formData.productName}
-          onChange={handleInputChange}
-          required
-        />
-        <InputField
-          label="가격"
-          name="productPrice"
-          value={formData.productPrice}
-          onChange={handleInputChange}
-          type="number"
-          required
-        />
-        <SelectField
-          label="카테고리"
-          name="productCategory"
-          value={formData.productCategory}
-          onChange={handleInputChange}
-          required
-          options={[
-            { value: "cap", label: "Cap" },
-            { value: "outer", label: "Outer" },
-            { value: "top", label: "Top" },
-            { value: "bottom", label: "Bottom" },
-            { value: "accessories", label: "Accessories" },
-          ]}
-        />
-        <TextAreaField
-          label="상품 안내"
-          name="productInfo"
-          value={productInfo}
-          onChange={(e) => setProductInfo(e.target.value)}
-          placeholder="상품 안내를 입력하세요."
-          required
-        />
-        <TextAreaField
-          label="중요 안내"
-          name="productNotice"
-          value={formData.productNotice}
-          onChange={handleInputChange}
-          placeholder="중요 안내를 입력하세요."
-        />
-        <InputField
-          label="원산지"
-          name="productOrigin"
-          value={formData.productOrigin}
-          onChange={handleInputChange}
-          required
-        />
-        <InputField
-          label="제조사"
-          name="productManufacturer"
-          value={formData.productManufacturer}
-          onChange={handleInputChange}
-          required
-        />
-        <InputField
-          label="배송 방법"
-          name="productDeliveryMethod"
-          value={formData.productDeliveryMethod}
-          onChange={handleInputChange}
-          required
-        />
-        <InputField
-          label="배송비"
-          name="productDeliveryPrice"
-          value={formData.productDeliveryPrice}
-          onChange={handleInputChange}
-          type="number"
-          required
-        />
-        <InputField
-          label="출고예정"
-          name="productExpectedShippingDate"
-          value={productExpectedShippingDate}
-          onChange={(e) => setProductExpectedShippingDate(e.target.value)}
-          type="date"
-        />
-        <TextAreaField
-          label="상품 디테일 설명"
-          name="productDetails"
-          value={formData.productDetails}
-          onChange={handleInputChange}
-          placeholder="상품 디테일 설명을 입력하세요."
-          required
-        />
-        <TextAreaField
-          label="상품 재질 설명"
-          name="productMaterials"
-          value={formData.productMaterials}
-          onChange={handleInputChange}
-          placeholder="상품 재질 설명을 입력하세요."
-          required
-        />
-        <TextAreaField
-          label="상품 사이즈 정보"
-          name="productSizeInfo"
-          value={formData.productSizeInfo}
-          onChange={handleInputChange}
-          placeholder="상품 사이즈 정보를 입력하세요."
-          required
-        />
-        <div>
-          <label className="block font-semibold mb-1">상품 사이즈</label>
-          <SizeInputs
-            sizes={formData.productSize}
-            onSizeChange={handleSizeChange}
-            onAddSize={addSizeInput}
-            onRemoveSize={removeSizeInput}
-          />
-        </div>
         <div>
           <label className="block font-semibold mb-1">상품 이미지</label>
           <input
-            className="w-full"
             type="file"
             accept="image/*"
             multiple
             onChange={handleFileChange}
+            className="w-full"
           />
           {existingImageURL?.length > 0 && (
             <div className="mt-2">
@@ -381,7 +258,7 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
         >
-          상품 등록
+          제품 수정
         </button>
       </form>
     </div>

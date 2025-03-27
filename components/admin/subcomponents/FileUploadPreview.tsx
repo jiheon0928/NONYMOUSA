@@ -10,11 +10,11 @@ const FileUploadPreview = ({ files }: FileUploadPreviewProps): JSX.Element => (
       <div className="mt-2">
         <p className="text-sm font-semibold">새로운 이미지:</p>
         <div className="flex flex-row flex-wrap gap-2">
-          {files.map((file, index) => (
+          {files.map((file, i) => (
             <img
-              key={`new-img-${index}-${file.name}`}
+              key={`new-img-${i}-${file.name}`}
               src={URL.createObjectURL(file)}
-              alt={`새로운 이미지 ${index + 1}`}
+              alt={`새로운 이미지 ${i + 1}`}
               className="w-24 h-24 object-cover rounded border"
             />
           ))}

@@ -1,4 +1,3 @@
-// components/SelectField.tsx
 import React, { JSX } from "react";
 
 type OptionType = {
