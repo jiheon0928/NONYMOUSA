@@ -93,7 +93,7 @@ const MobileShopCartPage = () => {
                 <TextHandle
                   text={
                     totalPrice >= 50000 ? (
-                      <div className="flex">
+                      <div className="flex items-center">
                         무료 <AiOutlineQuestionCircle />
                       </div>
                     ) : (

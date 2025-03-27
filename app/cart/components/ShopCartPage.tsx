@@ -108,7 +108,7 @@ const ShopCartPage = () => {
                       className="text-center align-middle space-y-4 w-2/12 border-t border-gray-400"
                     >
                       {totalPrice >= 50000 ? (
-                        <div className="flex">
+                        <div className="flex items-center">
                           무료 <AiOutlineQuestionCircle />
                         </div>
                       ) : (
