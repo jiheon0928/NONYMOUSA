@@ -187,8 +187,14 @@ const EditProductForm = ({ productId }: EditProductFormProps): JSX.Element => {
         productExpectedShippingDate: productExpectedShippingDate
           ? new Date(productExpectedShippingDate + "T00:00:00")
           : null,
-        productInfo,
-        productNotice: formData.productNotice,
+        productInfo: productInfo
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line !== ""),
+        productNotice: formData.productNotice
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line !== ""),
         productOrigin: formData.productOrigin,
         productManufacturer: formData.productManufacturer,
         productDeliveryMethod: formData.productDeliveryMethod,

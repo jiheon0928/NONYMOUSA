@@ -10,7 +10,6 @@ import { ColorBtnClick, handleAddToCart } from "@/function/func";
 import { useProductStore } from "../zustand/state";
 import { productData } from "./types";
 import ProductDetailInfo from "./toggle/ToogleInfo";
-
 import MetaInfoBox from "./productDetail/MetaInfoBox";
 import ProductCntBox from "./productCnt/ProductCntBox";
 import ProductActionButtons from "./productDetail/ProductActionButtons";
