@@ -3,14 +3,7 @@ import { HiOutlineMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
 import TextHandle from "./TextHandle";
 import ChangeHandle from "./ChangeHandle";
-
-type Item = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string; // image 속성 추가
-};
+import { Item } from "@/app/cart/typeprops.tsx/TypeProps";
 
 const MobileUpDownHandle = ({
   item,
