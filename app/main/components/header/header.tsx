@@ -8,7 +8,7 @@ const Header = () => {
       <Navigation />
       <h1>
         <Link href="/main">
-          <MainLogo link="https://cdn.imweb.me/thumbnail/20250324/d37f6c52b31db.png" />
+          <MainLogo link="https://cdn.imweb.me/thumbnail/20250430/070ac4d1ee420.png" />
         </Link>
       </h1>
     </header>
