@@ -1,99 +1,81 @@
-"use client";
+// src/components/zustand/cartData.ts
+
+import { getDocs, collection } from "firebase/firestore";
+import { firestore } from "@/firebase/firebase";
+import { Item } from "@/app/cart/typeprops.tsx/TypeProps";
 import { create } from "zustand";
 
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  removeData: () => void;
-};
-
-type CartState = {
-  cartItems: CartItem[];
-  selectedItems: CartItem[];
+interface CartState {
+  cartItems: Item[];
+  selectedItems: Item[];
   isAllChecked: boolean;
   isDialogOpen: boolean;
   selectedItemId: string | null;
-  totalPrice: number;
-  setCartItems: (items: CartItem[]) => void;
-  toggleAllCheckbox: (isChecked: boolean) => void;
-  toggleItemCheckbox: (item: CartItem, isChecked: boolean) => void;
+
+  fetchItems: () => Promise<void>;
+  toggleAllCheckbox: () => void;
+  toggleItemCheckbox: (item: Item, checked: boolean) => void;
   openDialog: (itemId: string) => void;
   closeDialog: () => void;
-  changeQuantity: (itemId: string, newQuantity: number) => void;
-  removeItem: (itemId: string) => void; // removeItem 함수 추가
-};
+  changeQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (itemId: string) => void;
+}
 
 const useCartStore = create<CartState>((set, get) => ({
   cartItems: [],
   selectedItems: [],
-  isAllChecked: true,
+  isAllChecked: false,
   isDialogOpen: false,
   selectedItemId: null,
-  totalPrice: 0,
 
-  setCartItems: (items) =>
-    set(() => {
-      const itemsWithRemove = items.map((item) => ({
-        ...item,
-        removeData: () => {
-          set((state) => ({
-            cartItems: state.cartItems.filter(
-              (cartItem) => cartItem.id !== item.id
-            ),
-            selectedItems: state.selectedItems.filter(
-              (selectedItem) => selectedItem.id !== item.id
-            ),
-          }));
-        },
+  // 1) 파이어베이스에서 쇼핑카트 아이템 불러오기
+  fetchItems: async () => {
+    try {
+      const qs = await getDocs(collection(firestore, "shoppingCart"));
+      const items = qs.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Item, "id">),
       }));
-      return {
-        cartItems: itemsWithRemove,
-        selectedItems: itemsWithRemove,
-      };
-    }),
+      set({ cartItems: items });
+    } catch (error) {
+      console.error("fetchItems 실패:", error);
+    }
+  },
 
-  toggleAllCheckbox: (isChecked) =>
-    set(() => ({
-      isAllChecked: isChecked,
-      selectedItems: isChecked ? get().cartItems : [],
-    })),
+  // 이하 기존 액션들…
+  toggleAllCheckbox: () => {
+    const { cartItems, isAllChecked } = get();
+    set({
+      isAllChecked: !isAllChecked,
+      selectedItems: !isAllChecked ? [...cartItems] : [],
+    });
+  },
 
-  toggleItemCheckbox: (item, isChecked) =>
-    set((state) => ({
-      selectedItems: isChecked
-        ? [...state.selectedItems, item]
-        : state.selectedItems.filter(
-            (selectedItem) => selectedItem.id !== item.id
-          ),
-    })),
+  toggleItemCheckbox: (item, checked) => {
+    const { selectedItems } = get();
+    set({
+      selectedItems: checked
+        ? [...selectedItems, item]
+        : selectedItems.filter((i) => i.id !== item.id),
+    });
+  },
 
-  openDialog: (itemId) =>
-    set(() => ({
-      isDialogOpen: true,
-      selectedItemId: itemId,
-    })),
+  openDialog: (itemId) => set({ isDialogOpen: true, selectedItemId: itemId }),
+  closeDialog: () => set({ isDialogOpen: false, selectedItemId: null }),
 
-  closeDialog: () =>
-    set(() => ({
-      isDialogOpen: false,
-      selectedItemId: null,
-    })),
+  changeQuantity: (itemId, quantity) => {
+    const items = get().cartItems.map((i) =>
+      i.id === itemId ? { ...i, quantity } : i
+    );
+    set({ cartItems: items });
+  },
 
-  changeQuantity: (itemId, newQuantity) =>
-    set((state) => ({
-      selectedItems: state.selectedItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      ),
-    })),
-
-  removeItem: (itemId) =>
-    set((state) => ({
-      cartItems: state.cartItems.filter((item) => item.id !== itemId),
-      selectedItems: state.selectedItems.filter((item) => item.id !== itemId),
-    })),
+  removeItem: (itemId) => {
+    set({
+      cartItems: get().cartItems.filter((i) => i.id !== itemId),
+      selectedItems: get().selectedItems.filter((i) => i.id !== itemId),
+    });
+  },
 }));
 
 export default useCartStore;

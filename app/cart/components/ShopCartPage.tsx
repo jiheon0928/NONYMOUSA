@@ -1,5 +1,7 @@
+// src/components/ShopCartPage.tsx
 "use client";
 
+import { useEffect } from "react";
 import useCartStore from "@/components/zustand/cartData";
 import { AiOutlineClose, AiOutlineQuestionCircle } from "react-icons/ai";
 import GoodsInfo from "./GoodsBox/GoodsInfo";
@@ -18,6 +20,7 @@ const ShopCartPage = () => {
     isDialogOpen,
     selectedItemId,
 
+    fetchItems, // 추가된 부분
     toggleAllCheckbox,
     toggleItemCheckbox,
     openDialog,
@@ -26,13 +29,18 @@ const ShopCartPage = () => {
     removeItem,
   } = useCartStore();
 
+  // 마운트 시 한 번만 DB에서 불러오기
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
+
   const totalPrice = selectedItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
   return (
-    <div className="hidden md:flex  flex-col justify-center items-center mt-64 w-2/3 ">
+    <div className="hidden md:flex flex-col justify-center items-center mt-64 w-2/3">
       <div className="w-full">
         <ShopCart
           shopCartText="장바구니"
@@ -48,10 +56,10 @@ const ShopCartPage = () => {
           <table className="w-full">
             <tbody>
               {cartItems.map((v, i) => (
-                <tr key={i}>
-                  <td className="flex gap-4 border-r  border-t border-gray-400 py-3">
+                <tr key={v.id}>
+                  <td className="flex gap-4 border-r border-t border-gray-400 py-3">
                     <input
-                      className="w-4 h-4 appearance-none rounded-sm border border-gray-400 checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex flex checked:items-center checked:flex-row checked:justify-center"
+                      className="w-4 h-4 appearance-none rounded-sm border border-gray-400 checked:bg-black checked:before:content-['✔'] checked:before:text-white relative checked:flex items-center justify-center"
                       type="checkbox"
                       checked={selectedItems.some((item) => item.id === v.id)}
                       onChange={(e) => toggleItemCheckbox(v, e.target.checked)}
@@ -65,7 +73,7 @@ const ShopCartPage = () => {
                       removeFuncStyle=""
                     />
                   </td>
-                  <td className="text-center align-middle space-y-4 w-3/12 border-r  border-t border-gray-400">
+                  <td className="text-center align-middle space-y-4 w-3/12 border-r border-t border-gray-400">
                     <TextHandle text={v.quantity.toString()} className="" />
                     {isDialogOpen && selectedItemId === v.id && (
                       <UpDownHandle
@@ -74,27 +82,28 @@ const ShopCartPage = () => {
                         onQuantityChange={changeQuantity}
                       />
                     )}
-
                     <ChangeHandle
-                      text={"옵션/수량 변경"}
+                      text="옵션/수량 변경"
                       className="text-xs border border-gray-400 px-5 py-2"
                       clickFunc={() => openDialog(v.id)}
                     />
                   </td>
-                  <td className="text-center align-middle space-y-4 w-3/12  border-r  border-t border-gray-400">
+                  <td className="text-center align-middle space-y-4 w-3/12 border-r border-t border-gray-400">
                     <TextHandle
                       text={`￦${(v.price * v.quantity).toLocaleString()}`}
                       className=""
                     />
                     <ChangeHandle
-                      text={"바로 구매"}
+                      text="바로 구매"
                       className="text-xs text-white bg-black px-5 py-2"
-                      clickFunc={() => ""}
+                      clickFunc={() => {
+                        /* 구매 로직 */
+                      }}
                     />
                   </td>
                   {i === 0 && (
                     <td
-                      rowSpan={300}
+                      rowSpan={cartItems.length}
                       className="text-center align-middle space-y-4 w-2/12 border-t border-gray-400"
                     >
                       {totalPrice >= 50000 ? (
@@ -113,15 +122,16 @@ const ShopCartPage = () => {
         </div>
       </div>
       <div className="flex flex-col w-full">
-        <div className="text-left w-full border-t py-4 text-xs border-black">{`총 주문상품 ${cartItems.length}개`}</div>
-
+        <div className="text-left w-full border-t py-4 text-xs border-black">
+          {`총 주문상품 ${cartItems.length}개`}
+        </div>
         <div className="flex justify-center py-10 w-full border-t border-b border-gray-400">
           <TextHandle
             text={`￦${totalPrice.toLocaleString()}`}
             className="text-[20px] font-bold"
           />
           <TextHandle
-            text={`+ ${totalPrice >= 50000 ? "무료" : "￦3000"} `}
+            text={`+ ${totalPrice >= 50000 ? "무료" : "￦3000"}`}
             className="text-[20px] font-bold"
           />
           <TextHandle
